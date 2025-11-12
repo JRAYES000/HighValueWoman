@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire : Êtes-vous une Femme de Haute Valeur ?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #FFF5F7 0%, #FFE8EC 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(220, 53, 69, 0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #D63447 0%, #C1121F 100%);
+            padding: 50px 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.15em;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .progress-container {
+            background: #E8E8E8;
+            height: 10px;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #D63447 0%, #C1121F 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-number {
+            color: #D63447;
+            font-size: 1em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .question-text {
+            font-size: 1.5em;
+            margin-bottom: 35px;
+            line-height: 1.7;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .option {
+            background: #FAFAFA;
+            border: 3px solid #DADADA;
+            border-radius: 12px;
+            padding: 25px 28px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            line-height: 1.7;
+            position: relative;
+            color: #2a2a2a;
+            font-weight: 500;
+        }
+
+        .option:hover {
+            border-color: #D63447;
+            background: #FFF5F7;
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(214, 52, 71, 0.15);
+        }
+
+        .option.selected {
+            border-color: #C1121F;
+            background: linear-gradient(135deg, #FFF5F7 0%, #FFE8EC 100%);
+            box-shadow: 0 6px 20px rgba(214, 52, 71, 0.25);
+            font-weight: 600;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 6px;
+            background: #D63447;
+            border-radius: 12px 0 0 12px;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .option.selected::before {
+            transform: scaleY(1);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 45px;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-prev {
+            background: #E0E0E0;
+            color: #2a2a2a;
+        }
+
+        .btn-prev:hover:not(:disabled) {
+            background: #C8C8C8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #D63447 0%, #C1121F 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-next:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(214, 52, 71, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-container {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .results-container.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .score-overall {
+            background: linear-gradient(135deg, #D63447 0%, #C1121F 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(214, 52, 71, 0.3);
+        }
+
+        .score-overall h2 {
+            font-size: 2.3em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .score-overall .score-number {
+            font-size: 4.5em;
+            font-weight: 900;
+            margin: 25px 0;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .score-overall .score-label {
+            font-size: 1.35em;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .category-scores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 45px;
+        }
+
+        .category-card {
+            background: #FAFAFA;
+            border: 3px solid #DADADA;
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            border-color: #D63447;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(214, 52, 71, 0.2);
+        }
+
+        .category-card h3 {
+            color: #C1121F;
+            font-size: 1.2em;
+            margin-bottom: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .category-score {
+            font-size: 2.8em;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .category-bar {
+            background: #E0E0E0;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .category-bar-fill {
+            background: linear-gradient(90deg, #D63447 0%, #C1121F 100%);
+            height: 100%;
+            transition: width 1s ease;
+        }
+
+        .advice-section {
+            background: #FAFAFA;
+            border-left: 6px solid #D63447;
+            padding: 35px;
+            margin-bottom: 35px;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .advice-section h3 {
+            color: #C1121F;
+            font-size: 1.65em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .advice-section p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #2a2a2a;
+            font-size: 1.05em;
+        }
+
+        .advice-section strong {
+            color: #C1121F;
+            font-weight: 700;
+        }
+
+        .advice-section ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        .advice-section li {
+            line-height: 1.9;
+            margin-bottom: 15px;
+            color: #2a2a2a;
+            font-size: 1.05em;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #D63447 0%, #C1121F 100%);
+            color: white;
+            padding: 20px 55px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-weight: 700;
+            display: block;
+            margin: 50px auto 0;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(214, 52, 71, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.7em;
+            }
+
+            .header p {
+                font-size: 1em;
+            }
+
+            .content {
+                padding: 35px 25px;
+            }
+
+            .question-text {
+                font-size: 1.3em;
+            }
+
+            .option {
+                padding: 22px 24px;
+                font-size: 1.05em;
+            }
+
+            .navigation {
+                flex-direction: column-reverse;
+            }
+
+            .score-overall h2 {
+                font-size: 1.8em;
+            }
+
+            .score-overall .score-number {
+                font-size: 3.5em;
+            }
+
+            .category-scores {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ Êtes-vous une Femme de Haute Valeur ? ✨</h1>
+            <p><strong>Découvrez vos forces et vos axes d'amélioration pour construire une relation épanouie et durable</strong></p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="content">
+            <div id="questionnaire">
+                <!-- Questions will be inserted here by JavaScript -->
+            </div>
+
+            <div class="results-container" id="results">
+                <!-- Results will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // CATÉGORIE 1: Communication & Expression Émotionnelle (5 questions)
+            {
+                category: "communication",
+                question: "Votre partenaire rentre du travail et s'installe calmement à côté de vous pour regarder un film sans beaucoup parler. Comment réagissez-vous ?",
+                options: [
+                    {text: "Je me sens déconnectée et j'ai besoin qu'il partage ses émotions et parle de sa journée pour me sentir proche de lui", points: 0},
+                    {text: "Je comprends que c'est sa façon de créer du lien et j'apprécie ce moment de calme partagé ensemble", points: 1},
+                    {text: "Je lui demande ce qui ne va pas car son silence me fait penser qu'il est distant ou en colère contre moi", points: 0}
+                ]
+            },
+            {
+                category: "communication",
+                question: "Vous avez un besoin précis dans votre relation. Comment l'exprimez-vous habituellement ?",
+                options: [
+                    {text: "Je laisse des indices et j'attends qu'il devine - s'il m'aime vraiment, il devrait comprendre sans que je dise rien", points: 0},
+                    {text: "Je lui dis clairement et directement ce dont j'ai besoin, par exemple : 'J'aimerais beaucoup que tu m'offres des fleurs de temps en temps'", points: 1},
+                    {text: "Je deviens distante ou irritable jusqu'à ce qu'il finisse par me demander ce qui ne va pas", points: 0}
+                ]
+            },
+            {
+                category: "communication",
+                question: "Après une situation qui vous a blessée, vous dites : 'J'ai l'impression que tu ne te soucies pas de moi.' Êtes-vous d'accord avec cette affirmation : 'C'est une façon saine d'exprimer mes émotions' ?",
+                options: [
+                    {text: "Oui, j'exprime authentiquement ce que je ressens dans mon cœur", points: 0},
+                    {text: "Non, c'est une accusation cachée. Je devrais plutôt dire : 'Je sais que tu as fait des efforts, mais j'ai cette sensation étrange que quelque chose me manque'", points: 1},
+                    {text: "Oui, mes émotions sont la preuve de la réalité - si je le ressens, c'est que c'est vrai", points: 0}
+                ]
+            },
+            {
+                category: "communication",
+                question: "Vous demandez à votre partenaire : 'Est-ce que tu penses que je pourrais devenir mannequin ?' alors que vous connaissez déjà la réponse réaliste. Pourquoi posez-vous cette question ?",
+                options: [
+                    {text: "Pour tester sa réaction et voir s'il me soutient émotionnellement même face à une question peu réaliste", points: 0},
+                    {text: "C'est manipulateur - si je veux du soutien émotionnel, je devrais le demander directement sans poser de piège", points: 1},
+                    {text: "Pour voir s'il me trouve vraiment belle ou s'il va être brutalement honnête avec moi", points: 0}
+                ]
+            },
+            {
+                category: "communication",
+                question: "Quand vous avez un désaccord avec votre partenaire, comment formulez-vous généralement votre problème ?",
+                options: [
+                    {text: "'Tu ne fais JAMAIS attention à moi' ou 'Tu es TOUJOURS comme ça'", points: 0},
+                    {text: "'J'aimerais beaucoup que nous passions une soirée en tête-à-tête au moins une fois par semaine' avec un exemple concret", points: 1},
+                    {text: "'Tu devrais comprendre ce qui me dérange sans que j'aie besoin de l'expliquer'", points: 0}
+                ]
+            },
+
+            // CATÉGORIE 2: Gestion des Conflits & Régulation Émotionnelle (5 questions)
+            {
+                category: "conflits",
+                question: "Durant une dispute, quelle est votre tendance naturelle ?",
+                options: [
+                    {text: "Je ressors d'anciennes blessures et erreurs du passé pour appuyer mon argument actuel", points: 0},
+                    {text: "Je reste concentrée sur le problème présent et cherche une solution concrète pour avancer", points: 1},
+                    {text: "J'élève la voix et deviens plus émotive pour qu'il comprenne vraiment la gravité de la situation", points: 0}
+                ]
+            },
+            {
+                category: "conflits",
+                question: "Votre partenaire oublie de vider le lave-vaisselle et s'excuse. Comment réagissez-vous ?",
+                options: [
+                    {text: "C'est la preuve qu'il ne me 'voit' pas, ne me valorise pas - cela mérite une discussion sérieuse sur notre relation", points: 0},
+                    {text: "C'est simplement une erreur humaine, j'accepte ses excuses et on passe à autre chose sans drame", points: 1},
+                    {text: "J'accepte ses excuses mais je lui rappelle toutes les autres fois où il a oublié quelque chose d'important", points: 0}
+                ]
+            },
+            {
+                category: "conflits",
+                question: "Comment décririez-vous l'atmosphère que vous créez habituellement à la maison ?",
+                options: [
+                    {text: "Intense et chargée d'émotions - je partage tous mes sentiments et attends la même chose de lui en retour", points: 0},
+                    {text: "Paisible et accueillante - j'essaie de rendre son retour à la maison agréable et reposant après sa journée", points: 1},
+                    {text: "Variable selon mon humeur du jour - s'il a de la chance, c'est calme et agréable", points: 0}
+                ]
+            },
+            {
+                category: "conflits",
+                question: "Quand quelque chose va mal dans votre couple, quelle est votre première réaction ?",
+                options: [
+                    {text: "Je liste mentalement tout ce qu'il a fait de travers et comment c'est principalement sa faute", points: 0},
+                    {text: "Je réfléchis d'abord à ma propre part de responsabilité dans le problème avant d'analyser la sienne", points: 1},
+                    {text: "Je me sens comme une victime de ses actions et de son manque d'attention envers moi", points: 0}
+                ]
+            },
+            {
+                category: "conflits",
+                question: "Êtes-vous d'accord avec cette affirmation : 'Les recherches scientifiques montrent que les femmes expriment plus de colère, de plaintes, de mépris et de critiques que les hommes dans les couples' ?",
+                options: [
+                    {text: "Non, c'est injuste - les femmes sont simplement plus expressives émotionnellement, ce qui est une qualité positive", points: 0},
+                    {text: "Oui, et je reconnais que je dois améliorer ma façon d'exprimer mes frustrations de manière constructive", points: 1},
+                    {text: "Peut-être, mais c'est parce que les hommes nous poussent à bout avec leur comportement", points: 0}
+                ]
+            },
+
+            // CATÉGORIE 3: Rôles & Contribution Relationnelle (5 questions)
+            {
+                category: "roles",
+                question: "Qu'apportez-vous concrètement à la vie de votre partenaire au quotidien ?",
+                options: [
+                    {text: "Moi-même - le simple fait d'être avec moi est déjà une contribution largement suffisante", points: 0},
+                    {text: "Du respect, une compagnie agréable, du soutien, de la paix, une intimité physique enthousiaste, et je rends sa vie plus facile et heureuse", points: 1},
+                    {text: "Je ne me suis jamais vraiment posé cette question - c'est plutôt à lui de m'apporter des choses importantes", points: 0}
+                ]
+            },
+            {
+                category: "roles",
+                question: "Votre partenaire assure généreusement les besoins financiers du foyer. Comment percevez-vous cet arrangement ?",
+                options: [
+                    {text: "C'est son rôle d'homme de subvenir aux besoins - je n'ai pas d'obligation particulière en retour au-delà d'être présente", points: 0},
+                    {text: "C'est un échange équitable : il apporte la sécurité financière, je dois activement contribuer en rendant sa vie meilleure, plus facile et plus agréable", points: 1},
+                    {text: "Il fait simplement ce qu'un 'vrai homme' doit faire - rien d'exceptionnel ni de remarquable", points: 0}
+                ]
+            },
+            {
+                category: "roles",
+                question: "Un homme dit : 'Je recherche une femme qui cuisine, prend soin de la maison et de la famille.' Quelle est votre réaction ?",
+                options: [
+                    {text: "Il cherche une femme de ménage et cuisinière non payée - c'est clairement du machisme", points: 0},
+                    {text: "C'est légitime s'il assume aussi ses responsabilités traditionnelles (subvenir aux besoins, protéger). Les attentes doivent être réciproques", points: 1},
+                    {text: "Les temps ont changé - ces attentes sont complètement dépassées et oppressives pour les femmes modernes", points: 0}
+                ]
+            },
+            {
+                category: "roles",
+                question: "Comment évaluez-vous honnêtement votre contribution quotidienne dans votre couple ?",
+                options: [
+                    {text: "Je suis souvent une source de stress, de plaintes ou de tensions, mais c'est parce que j'ai des besoins légitimes qui ne sont pas comblés", points: 0},
+                    {text: "Je m'efforce activement d'être agréable à vivre, d'anticiper ses besoins, et de créer une atmosphère chaleureuse et accueillante", points: 1},
+                    {text: "Ma simple présence à ses côtés devrait suffire - je ne devrais pas avoir à 'prouver' ma valeur en permanence", points: 0}
+                ]
+            },
+            {
+                category: "roles",
+                question: "Vous passez la journée à la maison à faire le ménage et vous occuper des enfants pendant qu'il travaille à l'extérieur. Comment percevez-vous cette situation ?",
+                options: [
+                    {text: "Je suis une martyre - mon travail domestique est épuisant et invisible pendant qu'il a la partie facile au travail", points: 0},
+                    {text: "Nous avons tous les deux des responsabilités différentes mais importantes - je travaille dans le confort de mon foyer avec mes enfants, lui dans un environnement professionnel stressant", points: 1},
+                    {text: "Il devrait quand même faire 50% des tâches ménagères en rentrant du travail car l'égalité entre nous est importante", points: 0}
+                ]
+            },
+
+            // CATÉGORIE 4: Identité & Conditionnement (5 questions)
+            {
+                category: "identite",
+                question: "Avec vos amies, participez-vous à des conversations où vous critiquez ou moquez les hommes en général ?",
+                options: [
+                    {text: "Oui, c'est une façon normale de créer des liens entre femmes et de libérer nos frustrations quotidiennes", points: 0},
+                    {text: "Non, je reconnais que c'est souvent pour obtenir l'approbation d'autres femmes, pas par conviction profonde personnelle", points: 1},
+                    {text: "Oui, les hommes méritent d'être critiqués compte tenu de leurs comportements problématiques fréquents", points: 0}
+                ]
+            },
+            {
+                category: "identite",
+                question: "Êtes-vous d'accord avec cette affirmation : 'Je veux être forte, indépendante et ne pas avoir besoin d'un homme dans ma vie' ?",
+                options: [
+                    {text: "Absolument - c'est l'objectif ultime de toute femme moderne et émancipée", points: 0},
+                    {text: "C'est une forme de conditionnement culturel qui me coupe de mes instincts féminins naturels et authentiques", points: 1},
+                    {text: "Oui, avoir besoin d'un homme serait une faiblesse et un manque d'indépendance", points: 0}
+                ]
+            },
+            {
+                category: "identite",
+                question: "Comment vous sentez-vous par rapport à votre féminité naturelle (douceur, besoin de connexion, vulnérabilité) ?",
+                options: [
+                    {text: "Ce sont des faiblesses que je dois surmonter pour être respectée dans la société actuelle", points: 0},
+                    {text: "Ce sont mes forces naturelles et je préfère exprimer ma féminité authentique plutôt que d'imiter la masculinité", points: 1},
+                    {text: "Je rejette ces caractéristiques car elles sont des inventions du patriarcat pour nous opprimer", points: 0}
+                ]
+            },
+            {
+                category: "identite",
+                question: "Après une rupture difficile, comment racontez-vous généralement l'histoire de votre relation passée ?",
+                options: [
+                    {text: "Pendant la relation j'étais heureuse, mais maintenant je réalise qu'il m'a exploitée et utilisée émotionnellement", points: 0},
+                    {text: "Nous avons tous les deux bénéficié de cette relation et tous les deux contribué à son échec final", points: 1},
+                    {text: "J'étais la victime de ses manipulations - je vois maintenant tous les signes toxiques que j'avais manqués", points: 0}
+                ]
+            },
+            {
+                category: "identite",
+                question: "Êtes-vous d'accord avec cette affirmation : 'Les femmes modernes essaient de devenir émotionnellement froides et indifférentes - exactement ce qu'elles reprochaient aux hommes auparavant' ?",
+                options: [
+                    {text: "Non, devenir moins émotive est un signe de force personnelle et d'indépendance émotionnelle", points: 0},
+                    {text: "Oui, nous avons adopté les pires aspects de la masculinité toxique que nous critiquions autrefois chez les hommes", points: 1},
+                    {text: "C'est nécessaire pour se protéger dans le monde moderne des relations amoureuses", points: 0}
+                ]
+            },
+
+            // CATÉGORIE 5: Passé & Responsabilité (5 questions)
+            {
+                category: "passe",
+                question: "Vous êtes financièrement dépendante de votre partenaire car vous avez arrêté de travailler. Comment décririez-vous cette situation ?",
+                options: [
+                    {text: "Il m'a rendue dépendante de lui - c'est une forme de contrôle et de manipulation financière", points: 0},
+                    {text: "J'ai choisi cette dépendance en acceptant cet arrangement - c'est ma responsabilité d'assumer les conséquences de ce choix", points: 1},
+                    {text: "Je suis une victime de cette situation car je n'avais pas vraiment d'autre choix possible", points: 0}
+                ]
+            },
+            {
+                category: "passe",
+                question: "Comment gérez-vous le regret de vos choix relationnels ou intimes passés ?",
+                options: [
+                    {text: "Je ressens du regret, donc cela prouve que j'ai changé et que je ne referai plus ces mêmes erreurs", points: 0},
+                    {text: "Le regret seul ne change rien - je dois activement modifier mes comportements et mes critères de sélection", points: 1},
+                    {text: "C'est la faute de ces hommes qui m'ont utilisée, ce n'est pas ma responsabilité personnelle", points: 0}
+                ]
+            },
+            {
+                category: "passe",
+                question: "Dans vos relations passées, vous avez fréquenté des hommes de très haut statut social qui ne se sont jamais engagés. Aujourd'hui, comment percevez-vous cette période ?",
+                options: [
+                    {text: "J'ai été exploitée et utilisée par ces hommes qui m'ont fait perdre mon temps et ma jeunesse", points: 0},
+                    {text: "J'ai fait des choix en connaissance de cause pour accéder à un certain style de vie - je dois en assumer la responsabilité complète", points: 1},
+                    {text: "Ils m'ont menti sur leurs intentions réelles - ce sont eux les principaux coupables dans cette histoire", points: 0}
+                ]
+            },
+            {
+                category: "passe",
+                question: "Vous rencontrez un homme bon et stable qui vous respecte sincèrement. Quelle est votre réaction instinctive ?",
+                options: [
+                    {text: "Je me méfie et le teste constamment car les hommes de mon passé m'ont profondément blessée", points: 0},
+                    {text: "Je reconnais que mes blessures passées ne sont pas sa responsabilité et je lui donne une chance équitable et honnête", points: 1},
+                    {text: "Il doit prouver qu'il est différent et compenser pour les erreurs et torts des autres hommes avant lui", points: 0}
+                ]
+            },
+            {
+                category: "passe",
+                question: "Êtes-vous d'accord avec cette affirmation : 'Mes critères élevés pour un partenaire sont légitimes même si j'ai eu de nombreux partenaires occasionnels dans le passé' ?",
+                options: [
+                    {text: "Absolument - mon passé ne devrait pas affecter ce que je mérite maintenant dans une relation", points: 0},
+                    {text: "Non - mes choix passés ont des conséquences réelles et affectent ma valeur sur le marché des relations", points: 1},
+                    {text: "Oui - les hommes qui jugent mon passé sont simplement machistes et psychologiquement insécures", points: 0}
+                ]
+            },
+
+            // CATÉGORIE 6: Compréhension Masculine & Empathie (5 questions)
+            {
+                category: "empathie",
+                question: "Aviez-vous déjà réfléchi au fait que votre partenaire ne peut pas poursuivre une carrière qui le rend heureux parce qu'elle ne paie pas suffisamment pour subvenir aux besoins d'une famille ?",
+                options: [
+                    {text: "Non, je n'y avais jamais pensé auparavant - c'est une véritable révélation pour moi", points: 0.5},
+                    {text: "Oui, je comprends ce sacrifice fondamental de la masculinité et j'en suis profondément reconnaissante", points: 1},
+                    {text: "C'est son choix personnel - personne ne le force à gagner autant d'argent que ça", points: 0}
+                ]
+            },
+            {
+                category: "empathie",
+                question: "Votre partenaire reste calme et silencieux durant un conflit entre vous. Comment interprétez-vous ce comportement ?",
+                options: [
+                    {text: "Il est indifférent, détaché émotionnellement, et ne se soucie pas vraiment de nos problèmes de couple", points: 0},
+                    {text: "Il fait un travail émotionnel énorme pour réguler ses émotions et maintenir la stabilité de notre relation", points: 1},
+                    {text: "C'est de la manipulation psychologique - il refuse volontairement de s'engager émotionnellement avec moi", points: 0}
+                ]
+            },
+            {
+                category: "empathie",
+                question: "Vous demandez à votre partenaire de prendre en charge une tâche (par exemple : organisation d'un week-end). Que faites-vous ensuite ?",
+                options: [
+                    {text: "Je critique ses choix s'ils diffèrent de mes préférences et lui suggère comment le faire 'correctement' à ma façon", points: 0},
+                    {text: "Je lui donne l'autorité complète sur cette tâche et j'accepte ses décisions même si elles diffèrent des miennes", points: 1},
+                    {text: "Je dis 'je m'en fiche, c'est toi qui décides' mais ensuite je rejette systématiquement toutes ses suggestions", points: 0}
+                ]
+            },
+            {
+                category: "empathie",
+                question: "Vous dites à votre partenaire : 'Je veux que tu sois plus honnête et direct avec moi.' Il l'est. Comment réagissez-vous ?",
+                options: [
+                    {text: "Je suis blessée ou offensée par son honnêteté brutale - il pourrait être plus délicat et sensible dans ses mots", points: 0},
+                    {text: "J'apprécie et valorise son honnêteté même si c'est parfois difficile et inconfortable à entendre", points: 1},
+                    {text: "Je réalise que je voulais seulement qu'il soit d'accord avec moi, pas vraiment qu'il soit honnête", points: 0.5}
+                ]
+            },
+            {
+                category: "empathie",
+                question: "Êtes-vous d'accord avec cette affirmation : 'Les hommes souffrent en silence par sens de l'honneur pour ne pas nous accabler de leurs propres luttes quotidiennes' ?",
+                options: [
+                    {text: "Non, les hommes n'ont pas de 'luttes' comparables aux nôtres - leur vie est généralement plus facile que la nôtre", points: 0},
+                    {text: "Oui, et mon manque d'empathie pour l'expérience masculine réelle est destructeur pour ma relation de couple", points: 1},
+                    {text: "S'ils souffrent vraiment, ils devraient en parler ouvertement comme nous les femmes le faisons naturellement", points: 0}
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = [];
+
+        const categoryNames = {
+            communication: "Communication & Expression",
+            conflits: "Gestion des Conflits",
+            roles: "Rôles & Contribution",
+            identite: "Identité & Conditionnement",
+            passe: "Passé & Responsabilité",
+            empathie: "Compréhension Masculine"
+        };
+
+        function initQuiz() {
+            displayQuestion();
+            updateProgress();
+        }
+
+        function displayQuestion() {
+            const questionnaireDiv = document.getElementById('questionnaire');
+            const question = questions[currentQuestion];
+            
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                const selected = answers[currentQuestion] === index ? 'selected' : '';
+                optionsHTML += `
+                    <div class="option ${selected}" onclick="selectOption(${index})">
+                        ${option.text}
+                    </div>
+                `;
+            });
+
+            questionnaireDiv.innerHTML = `
+                <div class="question-container active">
+                    <div class="question-number">Question ${currentQuestion + 1} sur ${questions.length}</div>
+                    <div class="question-text">${question.question}</div>
+                    <div class="options">
+                        ${optionsHTML}
+                    </div>
+                    <div class="navigation">
+                        <button class="btn btn-prev" onclick="previousQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>
+                            ← Précédent
+                        </button>
+                        <button class="btn btn-next" onclick="nextQuestion()" ${answers[currentQuestion] === undefined ? 'disabled' : ''}>
+                            ${currentQuestion === questions.length - 1 ? 'Voir mes résultats' : 'Suivant →'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectOption(index) {
+            answers[currentQuestion] = index;
+            displayQuestion();
+        }
+
+        function nextQuestion() {
+            if (answers[currentQuestion] === undefined) return;
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion();
+                updateProgress();
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+                updateProgress();
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function calculateScores() {
+            let totalScore = 0;
+            let categoryScores = {
+                communication: 0,
+                conflits: 0,
+                roles: 0,
+                identite: 0,
+                passe: 0,
+                empathie: 0
+            };
+
+            questions.forEach((question, index) => {
+                const selectedOption = answers[index];
+                if (selectedOption !== undefined) {
+                    const points = question.options[selectedOption].points;
+                    totalScore += points;
+                    categoryScores[question.category] += points;
+                }
+            });
+
+            return { totalScore, categoryScores };
+        }
+
+        function getOverallLevel(score) {
+            if (score >= 25) return {
+                title: "Femme de Haute Valeur - Excellence Relationnelle",
+                description: "Vous démontrez une compréhension exceptionnelle des dynamiques relationnelles saines."
+            };
+            if (score >= 20) return {
+                title: "En Bonne Voie - Ajustements Mineurs Nécessaires",
+                description: "Vous avez une base solide avec quelques domaines à améliorer."
+            };
+            if (score >= 15) return {
+                title: "Développement Requis - Prise de Conscience Importante",
+                description: "Des changements significatifs sont nécessaires pour améliorer votre relation."
+            };
+            if (score >= 10) return {
+                title: "Transformation Nécessaire - Travail Significatif à Faire",
+                description: "Plusieurs comportements destructeurs doivent être corrigés activement."
+            };
+            return {
+                title: "Refonte Complète - Comportements Destructeurs Dominants",
+                description: "Une transformation profonde est nécessaire pour construire une relation saine."
+            };
+        }
+
+        function getDetailedAdvice(totalScore, categoryScores) {
+            let advice = '';
+
+            // Analyse globale
+            if (totalScore >= 25) {
+                advice += `
+                    <div class="advice-section">
+                        <h3>🌟 Félicitations !</h3>
+                        <p>Vous démontrez une <strong>compréhension exceptionnelle</strong> des dynamiques relationnelles saines. Vous avez intégré les principes de <strong>responsabilité personnelle</strong>, de <strong>communication directe et claire</strong>, et de <strong>contribution active</strong> dans votre couple. Votre capacité à reconnaître la nature transactionnelle des relations tout en maintenant <strong>empathie et respect mutuel</strong> est remarquable.</p>
+                        <p><strong>Points forts identifiés :</strong> Vous créez probablement une atmosphère de paix à la maison, communiquez clairement vos besoins sans attendre qu'on les devine, assumez la responsabilité de vos choix, et comprenez l'expérience masculine. Ces qualités exceptionnelles font de vous une partenaire de très haute valeur.</p>
+                        <p><strong>Conseil de maintien :</strong> Continuez à cultiver ces comportements positifs et restez vigilante face aux messages culturels toxiques qui pourraient vous éloigner de ces principes sains et équilibrés.</p>
+                    </div>
+                `;
+            } else if (totalScore >= 20) {
+                advice += `
+                    <div class="advice-section">
+                        <h3>✨ Très Bon Niveau</h3>
+                        <p>Vous avez une <strong>base solide</strong> dans votre approche relationnelle. Vous comprenez plusieurs principes fondamentaux mais quelques ajustements ciblés vous permettraient d'atteindre l'excellence.</p>
+                        <p><strong>Ce qui fonctionne bien :</strong> Vous démontrez déjà une bonne conscience de l'importance de la contribution mutuelle et de la communication claire. Votre compréhension des dynamiques homme-femme est largement au-dessus de la moyenne.</p>
+                        <p><strong>Prochaine étape :</strong> Identifiez vos catégories les plus faibles ci-dessous et <strong>concentrez vos efforts</strong> sur ces domaines spécifiques. Quelques changements ciblés et cohérents pourraient transformer votre relation.</p>
+                    </div>
+                `;
+            } else if (totalScore >= 15) {
+                advice += `
+                    <div class="advice-section">
+                        <h3>⚠️ Prise de Conscience Nécessaire</h3>
+                        <p>Vos résultats révèlent que plusieurs <strong>croyances toxiques</strong> influencent actuellement votre comportement relationnel. Vous êtes probablement affectée par le conditionnement culturel moderne qui vous éloigne de vos instincts féminins naturels et authentiques.</p>
+                        <p><strong>Réalité importante :</strong> Les comportements que vous considérez peut-être comme "normaux" ou "justifiés" sont en fait <strong>destructeurs pour votre relation</strong>. Vous créez probablement du stress et des tensions sans en avoir pleinement conscience.</p>
+                        <p><strong>Première action :</strong> Développez l'<strong>auto-conscience radicale</strong>. Commencez à remettre en question vos récits de victimisation et à prendre la responsabilité réelle de votre contribution aux problèmes relationnels.</p>
+                    </div>
+                `;
+            } else if (totalScore >= 10) {
+                advice += `
+                    <div class="advice-section">
+                        <h3>🚨 Transformation Urgente Requise</h3>
+                        <p>Vos résultats indiquent que vous adoptez actuellement de <strong>nombreux comportements destructeurs</strong> qui sabotent activement votre relation. Vous êtes probablement une source constante de tensions, de stress et d'insatisfaction pour votre partenaire.</p>
+                        <p><strong>Vérité difficile :</strong> Si votre relation se termine, ce ne sera pas "sa faute" ou parce qu'il "ne fait pas d'efforts". Ce sera une <strong>conséquence directe</strong> de votre incapacité actuelle à être une partenaire de valeur.</p>
+                        <p><strong>Action immédiate :</strong> Arrêtez de blâmer les hommes et la société. Prenez <strong>pleine responsabilité</strong> de vos comportements actuels. Reconnaissez que vous avez probablement accumulé une "dette émotionnelle" par vos choix passés et que votre partenaire actuel ne doit pas la payer.</p>
+                    </div>
+                `;
+            } else {
+                advice += `
+                    <div class="advice-section">
+                        <h3>⛔ Refonte Complète Nécessaire</h3>
+                        <p>Vos résultats révèlent une situation critique : vous êtes actuellement <strong>profondément conditionnée</strong> par des croyances toxiques qui détruisent systématiquement vos relations. Vos comportements actuels rendent probablement toute relation saine et durable pratiquement impossible.</p>
+                        <p><strong>Réalité brutale :</strong> Vous êtes probablement : constamment critique, querelleuse, centrée sur vous-même, inconsciente de ce que vous apportez réellement, et incapable d'empathie envers l'expérience masculine authentique. <strong>Aucun homme de haute valeur ne restera longtemps dans ces conditions.</strong></p>
+                        <p><strong>Chemin de transformation :</strong> Vous devez entreprendre un travail psychologique profond et sincère. Commencez par accepter que <strong>vos croyances actuelles sont fausses</strong> et qu'elles ont été implantées par un conditionnement culturel destructeur. Cherchez de l'aide professionnelle si nécessaire.</p>
+                    </div>
+                `;
+            }
+
+            // Conseils par catégorie faible
+            const weakCategories = Object.entries(categoryScores)
+                .filter(([cat, score]) => score < 4)
+                .sort((a, b) => a[1] - b[1])
+                .slice(0, 3);
+
+            if (weakCategories.length > 0) {
+                advice += `<div class="advice-section"><h3>📍 Vos Domaines Prioritaires d'Amélioration</h3>`;
+                
+                weakCategories.forEach(([category, score]) => {
+                    advice += getCategoryAdvice(category, score);
+                });
+                
+                advice += `</div>`;
+            }
+
+            // Conseils pratiques universels
+            advice += `
+                <div class="advice-section">
+                    <h3>💡 Actions Concrètes à Mettre en Place Dès Aujourd'hui</h3>
+                    <ul>
+                        <li><strong>Communication directe :</strong> Pendant 1 semaine, exprimez vos besoins de manière claire et précise au lieu d'attendre qu'il devine. <strong>Exemple concret :</strong> "J'aimerais beaucoup que nous passions 30 minutes ensemble chaque soir sans téléphones."</li>
+                        <li><strong>Gratitude quotidienne :</strong> Chaque jour, exprimez verbalement votre reconnaissance sincère pour <strong>3 choses concrètes</strong> qu'il fait ou fournit (même si elles semblent petites).</li>
+                        <li><strong>Pause avant réaction :</strong> Quand vous ressentez de la colère ou de la frustration, <strong>attendez 10 minutes</strong> avant de réagir. Demandez-vous : "Est-ce vraiment important ? Cela vaut-il la peine de perturber la paix ?"</li>
+                        <li><strong>Auto-évaluation hebdomadaire :</strong> Chaque dimanche, posez-vous ces questions honnêtement : "Ai-je rendu sa vie meilleure cette semaine ? Ai-je été une source de paix ou de stress ? Qu'ai-je concrètement apporté ?"</li>
+                        <li><strong>Éliminez les discussions toxiques :</strong> Arrêtez immédiatement de participer à des conversations qui dénigrent les hommes avec vos amies. <strong>Changez de sujet</strong> ou défendez activement les hommes.</li>
+                        <li><strong>Connexion silencieuse :</strong> 2 fois par semaine, passez du temps ensemble sans parler (regarder un film, être côte à côte en lisant). <strong>Appréciez consciemment</strong> cette forme de connexion masculine authentique.</li>
+                    </ul>
+                </div>
+            `;
+
+            return advice;
+        }
+
+        function getCategoryAdvice(category, score) {
+            const adviceMap = {
+                communication: `
+                    <p><strong>📢 Communication & Expression (${score}/5) :</strong> Vous confondez probablement <strong>intensité émotionnelle</strong> et connexion authentique. Votre besoin constant de "miroir émotionnel" épuise votre partenaire. <strong>Action concrète :</strong> Apprenez à apprécier la connexion silencieuse. Quand il s'installe calmement à côté de vous, c'est SA façon de créer du lien. Exprimez vos besoins directement : <strong>"J'aimerais X"</strong> au lieu d'attendre qu'il devine ou de poser des questions pièges manipulatrices.</p>
+                `,
+                conflits: `
+                    <p><strong>⚔️ Gestion des Conflits (${score}/5) :</strong> Selon les recherches scientifiques de John Gottman, <strong>les femmes sont leaders en colère, mépris et critiques destructrices</strong>. Vous escaladez probablement les conflits au lieu de les résoudre constructivement. Vous ressortez d'anciennes blessures et transformez les petites erreurs en drames existentiels. <strong>Action concrète :</strong> Quand il oublie quelque chose, c'est simplement une erreur, pas une preuve qu'il ne vous "voit" pas. <strong>Restez concentrée</strong> sur le problème actuel et cherchez des solutions concrètes au lieu de déclencher des guerres émotionnelles épuisantes.</p>
+                `,
+                roles: `
+                    <p><strong>👥 Rôles & Contribution (${score}/5) :</strong> Vous avez probablement <strong>jamais vraiment réfléchi</strong> à ce que vous apportez concrètement à sa vie quotidienne. "Moi-même" n'est PAS une réponse acceptable. Les relations sont <strong>transactionnelles par nature</strong>, pas inconditionnelles. <strong>Action concrète :</strong> Listez spécifiquement et honnêtement ce que vous contribuez : respect, compagnie agréable, paix à la maison, soutien émotionnel intelligent, intimité physique enthousiaste, compétences domestiques. <strong>Si votre liste est vide ou vague</strong>, vous exploitez essentiellement un homme qui ne connaît pas sa propre valeur.</p>
+                `,
+                identite: `
+                    <p><strong>🎭 Identité & Conditionnement (${score}/5) :</strong> Vous êtes <strong>profondément conditionnée</strong> par le discours moderne contre vos instincts naturels authentiques. Vous participez à des discussions toxiques sur les hommes pour l'approbation d'autres femmes, vous vous transformez en "femme forte et indifférente" (exactement ce que vous reprochiez aux hommes), et vous créez des liens féminins basés sur la haine collective des hommes. <strong>Action concrète :</strong> Reconnaissez que vos instincts féminins naturels (douceur, vulnérabilité, besoin de connexion) sont vos <strong>FORCES AUTHENTIQUES</strong>, pas des faiblesses. Sortez immédiatement de l'environnement toxique qui vous entoure.</p>
+                `,
+                passe: `
+                    <p><strong>⏮️ Passé & Responsabilité (${score}/5) :</strong> Vous avez accumulé une <strong>"dette émotionnelle"</strong> par vos choix passés (partenaires occasionnels, hommes de haut statut qui ne se sont jamais engagés). Maintenant vous exigez que votre partenaire actuel paie cette dette qu'il n'a pas créée. Vous vous victimisez au lieu d'assumer la responsabilité. <strong>Action concrète :</strong> Arrêtez de dire "Il m'a utilisée" et dites plutôt <strong>"J'ai fait de mauvais choix"</strong>. Le regret seul ne change RIEN - les études montrent que les femmes continuent le même comportement destructeur. <strong>Changez activement</strong> vos critères de sélection et vos comportements dès maintenant.</p>
+                `,
+                empathie: `
+                    <p><strong>❤️ Compréhension Masculine (${score}/5) :</strong> Vous avez <strong>zéro empathie</strong> pour l'expérience masculine authentique. Vous n'aviez probablement jamais considéré qu'il a dû abandonner ses rêves personnels pour une carrière qui paie suffisamment pour subvenir aux besoins d'une famille. Quand il reste calme, vous pensez qu'il est indifférent alors qu'il fait un <strong>travail émotionnel ÉNORME</strong> pour réguler ses émotions et protéger la relation. <strong>Action concrète :</strong> Reconnaissez sa charge mentale invisible constante : sécurité financière, stabilité à long terme, responsabilités à haut risque. <strong>Respectez son besoin de hiérarchie claire</strong> - donnez-lui autorité complète sur les tâches qu'il prend en charge sans micro-gestion.</p>
+                `
+            };
+
+            return adviceMap[category] || '';
+        }
+
+        function showResults() {
+            const { totalScore, categoryScores } = calculateScores();
+            const level = getOverallLevel(totalScore);
+            const detailedAdvice = getDetailedAdvice(totalScore, categoryScores);
+
+            let categoryHTML = '';
+            Object.entries(categoryScores).forEach(([category, score]) => {
+                const percentage = (score / 5) * 100;
+                categoryHTML += `
+                    <div class="category-card">
+                        <h3>${categoryNames[category]}</h3>
+                        <div class="category-score">${score}/5</div>
+                        <div class="category-bar">
+                            <div class="category-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('questionnaire').style.display = 'none';
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="score-overall">
+                    <h2>${level.title}</h2>
+                    <div class="score-number">${totalScore}/30</div>
+                    <div class="score-label">${level.description}</div>
+                </div>
+
+                <div class="category-scores">
+                    ${categoryHTML}
+                </div>
+
+                ${detailedAdvice}
+
+                <button class="restart-btn" onclick="restartQuiz()">Recommencer le questionnaire</button>
+            `;
+            resultsDiv.classList.add('active');
+            
+            // Animate category bars
+            setTimeout(() => {
+                document.querySelectorAll('.category-bar-fill').forEach((bar, index) => {
+                    const score = Object.values(categoryScores)[index];
+                    const percentage = (score / 5) * 100;
+                    bar.style.width = percentage + '%';
+                });
+            }, 300);
+
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            document.getElementById('questionnaire').style.display = 'block';
+            document.getElementById('results').classList.remove('active');
+            initQuiz();
+        }
+
+        // Initialize quiz on page load
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>
