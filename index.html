@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Femme de Haute Valeur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe8f5 100%);
+            color: #2d1f3d;
+            line-height: 1.7;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(139, 69, 139, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #d946a6 0%, #b03584 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .question-block {
+            background: #fff5fb;
+            border-left: 5px solid #d946a6;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(217, 70, 166, 0.1);
+        }
+
+        .question-number {
+            color: #d946a6;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #2d1f3d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #e8c5e0;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .option:hover {
+            border-color: #d946a6;
+            background: #fff5fb;
+            transform: translateX(5px);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            margin-top: 3px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: #d946a6;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1.05em;
+            color: #2d1f3d;
+        }
+
+        .option.selected {
+            border-color: #d946a6;
+            background: #fff0f9;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #d946a6 0%, #b03584 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            display: block;
+            margin: 40px auto;
+            box-shadow: 0 5px 20px rgba(217, 70, 166, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(217, 70, 166, 0.5);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #fff5fb 0%, #ffe8f5 100%);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .score-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: #d946a6;
+            margin: 20px 0;
+        }
+
+        .score-label {
+            font-size: 1.3em;
+            color: #2d1f3d;
+            margin-bottom: 10px;
+        }
+
+        .feedback {
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #d946a6;
+            margin-top: 20px;
+        }
+
+        .feedback h3 {
+            color: #d946a6;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .feedback p {
+            font-size: 1.1em;
+            color: #2d1f3d;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .feedback ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .feedback li {
+            margin-bottom: 12px;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e8c5e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d946a6 0%, #b03584 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.6em;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .question-text {
+                font-size: 1.05em;
+            }
+
+            .option label {
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ Questionnaire : Femme de Haute Valeur ✨</h1>
+            <p>Évaluez votre compréhension des principes d'une relation épanouie</p>
+        </div>
+
+        <div class="content">
+            <form id="quizForm">
+                <!-- Question 1 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 1</div>
+                    <div class="question-text">J'ai remarqué que mon partenaire était moins présent pour moi et semble avoir beaucoup de travail. Comment réagissez-vous ?</div>
+                    <div class="option">
+                        <input type="radio" name="q1" value="A" id="q1a">
+                        <label for="q1a">Je lui fais comprendre que j'ai aussi besoin d'attention et que son travail ne devrait pas passer avant moi. Je lui demande de trouver un meilleur équilibre et de me consacrer plus de temps, car je me sens négligée et c'est important qu'il le sache.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" value="B" id="q1b">
+                        <label for="q1b">Je comprends qu'il traverse une période exigeante professionnellement et je choisis d'être une source de paix plutôt que de stress supplémentaire. Je rends son foyer accueillant et reposant, et j'exprime ma reconnaissance pour ses efforts à subvenir à nos besoins. Je sais que c'est temporaire.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" value="C" id="q1c">
+                        <label for="q1c">Je ressens que son absence signifie qu'il ne se soucie plus autant de moi. Je dois avoir une discussion sérieuse avec lui pour comprendre pourquoi il me met au second plan et lui rappeler que notre relation doit rester une priorité, peu importe son travail.</label>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 2</div>
+                    <div class="question-text">Vous avez un besoin précis dans votre relation. Comment l'exprimez-vous habituellement ?</div>
+                    <div class="option">
+                        <input type="radio" name="q2" value="A" id="q2a">
+                        <label for="q2a">Je laisse des indices et j'attends qu'il devine - s'il m'aime vraiment, il devrait comprendre sans que je dise rien</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" value="B" id="q2b">
+                        <label for="q2b">Je lui dis clairement et directement ce dont j'ai besoin, par exemple : 'J'aimerais beaucoup que tu m'offres des fleurs de temps en temps'</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" value="C" id="q2c">
+                        <label for="q2c">Je deviens distante ou irritable jusqu'à ce qu'il finisse par me demander ce qui ne va pas</label>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 3</div>
+                    <div class="question-text">Après une dispute ou une situation qui vous a blessée, vous dites à votre partenaire : "J'ai l'impression que tu ne te soucies pas de moi." Comment qualifieriez-vous cette phrase ?</div>
+                    <div class="option">
+                        <input type="radio" name="q3" value="A" id="q3a">
+                        <label for="q3a">C'est une accusation cachée, pas une expression saine : Cette phrase n'est pas une simple expression d'émotion. C'est en réalité une accusation déguisée qui attaque son caractère et ses intentions. Une expression saine de mes émotions serait plutôt : 'Je me sens blessée par ce qui s'est passé et j'aimerais qu'on en parle calmement ensemble.'</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" value="B" id="q3b">
+                        <label for="q3b">C'est une expression authentique de mes émotions : C'est une façon authentique d'exprimer ce que je ressens dans mon cœur. Mes émotions sont ma vérité personnelle et il doit les accepter telles quelles sans se sentir attaqué.</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" value="C" id="q3c">
+                        <label for="q3c">Mes émotions reflètent toujours la réalité : Oui, car mes émotions sont la preuve de ce qui se passe réellement dans notre relation. Si je le ressens, c'est forcément vrai.</label>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 4</div>
+                    <div class="question-text">Vous demandez à votre partenaire : 'Est-ce que tu penses que je pourrais devenir mannequin ?' alors que vous connaissez déjà la réponse réaliste. Pourquoi posez-vous cette question ?</div>
+                    <div class="option">
+                        <input type="radio" name="q4" value="A" id="q4a">
+                        <label for="q4a">Pour tester sa réaction et voir s'il me soutient émotionnellement même face à une question peu réaliste</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" value="B" id="q4b">
+                        <label for="q4b">C'est manipulateur - si je veux du soutien émotionnel, je devrais le demander directement sans poser de piège</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" value="C" id="q4c">
+                        <label for="q4c">Pour voir s'il me trouve vraiment belle ou s'il va être brutalement honnête avec moi</label>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 5</div>
+                    <div class="question-text">Quand vous avez un désaccord avec votre partenaire, comment formulez-vous généralement votre problème ?</div>
+                    <div class="option">
+                        <input type="radio" name="q5" value="A" id="q5a">
+                        <label for="q5a">J'utilise des mots absolus comme 'Tu ne fais JAMAIS attention à moi' ou 'Tu es TOUJOURS comme ça' ou 'À CHAQUE fois c'est pareil'</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" value="B" id="q5b">
+                        <label for="q5b">Je formule mes besoins de manière directe, spécifique et constructive : 'J'aimerais beaucoup que nous passions une soirée en tête-à-tête au moins une fois par semaine, comme nous le faisions avant'</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" value="C" id="q5c">
+                        <label for="q5c">Je pense que s'il me connaît vraiment et m'aime, il devrait comprendre ce qui me dérange sans que j'aie besoin de tout expliquer</label>
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 6</div>
+                    <div class="question-text">Durant une dispute, quelle est votre tendance naturelle ?</div>
+                    <div class="option">
+                        <input type="radio" name="q6" value="A" id="q6a">
+                        <label for="q6a">Je ressors d'anciennes blessures, des erreurs qu'il a faites il y a des mois ou des années, et des situations déjà résolues pour renforcer mon argument actuel</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" value="B" id="q6b">
+                        <label for="q6b">Je reste concentrée uniquement sur le problème présent qui nous oppose aujourd'hui, et je cherche une solution concrète et applicable pour avancer ensemble</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" value="C" id="q6c">
+                        <label for="q6c">J'élève la voix et je deviens de plus en plus émotive pour qu'il comprenne vraiment à quel point c'est grave et important pour moi</label>
+                    </div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 7</div>
+                    <div class="question-text">Votre partenaire oublie de vider le lave-vaisselle et s'excuse. Comment réagissez-vous ?</div>
+                    <div class="option">
+                        <input type="radio" name="q7" value="A" id="q7a">
+                        <label for="q7a">C'est la preuve qu'il ne me 'voit' pas, ne me valorise pas - cela mérite une discussion sérieuse sur notre relation</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" value="B" id="q7b">
+                        <label for="q7b">C'est simplement une erreur humaine, j'accepte ses excuses et on passe à autre chose sans drame</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" value="C" id="q7c">
+                        <label for="q7c">J'accepte ses excuses mais je lui rappelle toutes les autres fois où il a oublié quelque chose d'important</label>
+                    </div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 8</div>
+                    <div class="question-text">Comment décririez-vous l'atmosphère que vous créez habituellement à la maison ?</div>
+                    <div class="option">
+                        <input type="radio" name="q8" value="A" id="q8a">
+                        <label for="q8a">Intense et chargée d'émotions - je partage tous mes sentiments et attends la même chose de lui en retour</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" value="B" id="q8b">
+                        <label for="q8b">Paisible et accueillante - j'essaie de rendre son retour à la maison agréable et reposant après sa journée</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" value="C" id="q8c">
+                        <label for="q8c">Variable selon mon humeur du jour - s'il a de la chance, c'est calme et agréable</label>
+                    </div>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 9</div>
+                    <div class="question-text">Quand quelque chose va mal dans votre couple, quelle est votre première réaction ?</div>
+                    <div class="option">
+                        <input type="radio" name="q9" value="A" id="q9a">
+                        <label for="q9a">Je liste mentalement tout ce qu'il a fait de travers et comment c'est principalement sa faute</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" value="B" id="q9b">
+                        <label for="q9b">Je réfléchis d'abord à ma propre part de responsabilité dans le problème avant d'analyser la sienne</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" value="C" id="q9c">
+                        <label for="q9c">Je me sens comme une victime de ses actions et de son manque d'attention envers moi</label>
+                    </div>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 10</div>
+                    <div class="question-text">Êtes-vous d'accord avec cette affirmation : 'Les recherches scientifiques montrent que les femmes expriment plus de colère, de plaintes, de mépris et de critiques que les hommes dans les couples' ?</div>
+                    <div class="option">
+                        <input type="radio" name="q10" value="A" id="q10a">
+                        <label for="q10a">Non, c'est injuste - les femmes sont simplement plus expressives émotionnellement, ce qui est une qualité positive</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" value="B" id="q10b">
+                        <label for="q10b">Oui, et je reconnais que je dois améliorer ma façon d'exprimer mes frustrations de manière constructive</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" value="C" id="q10c">
+                        <label for="q10c">Peut-être, mais c'est parce que les hommes nous poussent à bout avec leur comportement</label>
+                    </div>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 11</div>
+                    <div class="question-text">Qu'apportez-vous concrètement à la vie de votre partenaire au quotidien ?</div>
+                    <div class="option">
+                        <input type="radio" name="q11" value="A" id="q11a">
+                        <label for="q11a">Le simple fait d'être avec lui, d'avoir choisi d'être en couple avec lui, est déjà une contribution largement suffisante</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q11" value="B" id="q11b">
+                        <label for="q11b">J'apporte concrètement : du respect, une compagnie agréable, un soutien dans ses défis, une atmosphère de paix à la maison, une intimité physique enthousiaste, de la gratitude exprimée régulièrement, et je m'efforce de rendre sa vie plus facile</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q11" value="C" id="q11c">
+                        <label for="q11c">Honnêtement, je ne me suis jamais vraiment posé cette question sérieusement. Je pense que c'est plutôt à lui de m'apporter des choses importantes</label>
+                    </div>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 12</div>
+                    <div class="question-text">Votre partenaire assure généreusement les besoins financiers du foyer. Comment percevez-vous cet arrangement ?</div>
+                    <div class="option">
+                        <input type="radio" name="q12" value="A" id="q12a">
+                        <label for="q12a">C'est simplement son rôle d'homme de subvenir aux besoins financiers de sa famille - c'est ce que les 'vrais hommes' font naturellement</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q12" value="B" id="q12b">
+                        <label for="q12b">Je comprends que les relations fonctionnent sur un échange mutuel de valeur : il apporte la sécurité financière et les ressources, je dois activement contribuer en rendant sa vie meilleure - atmosphère chaleureuse, soutien émotionnel, paix, gratitude, intimité</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q12" value="C" id="q12c">
+                        <label for="q12c">Il fait simplement ce qu'un 'vrai homme' doit faire pour mériter d'être en couple - rien d'exceptionnel ni de particulièrement remarquable</label>
+                    </div>
+                </div>
+
+                <!-- Question 13 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 13</div>
+                    <div class="question-text">Un homme dit : 'Je recherche une femme qui cuisine, prend soin de la maison et de la famille.' Quelle est votre réaction ?</div>
+                    <div class="option">
+                        <input type="radio" name="q13" value="A" id="q13a">
+                        <label for="q13a">Il cherche clairement une femme de ménage, cuisinière et nounou non payée. C'est du machisme pur et simple</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q13" value="B" id="q13b">
+                        <label for="q13b">C'est parfaitement légitime s'il assume aussi pleinement ses responsabilités traditionnelles masculines : subvenir entièrement aux besoins financiers, protéger, assurer la stabilité du foyer</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q13" value="C" id="q13c">
+                        <label for="q13c">Les temps ont changé - ces attentes sont complètement dépassées et oppressives pour les femmes modernes</label>
+                    </div>
+                </div>
+
+                <!-- Question 14 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 14</div>
+                    <div class="question-text">Comment évaluez-vous honnêtement votre contribution quotidienne dans votre couple ?</div>
+                    <div class="option">
+                        <input type="radio" name="q14" value="A" id="q14a">
+                        <label for="q14a">Je suis souvent une source de stress, de plaintes ou de tensions, mais c'est parce que j'ai des besoins légitimes qui ne sont pas comblés</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q14" value="B" id="q14b">
+                        <label for="q14b">Je m'efforce activement d'être agréable à vivre, d'anticiper ses besoins, et de créer une atmosphère chaleureuse et accueillante</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q14" value="C" id="q14c">
+                        <label for="q14c">Ma simple présence à ses côtés devrait suffire - je ne devrais pas avoir à 'prouver' ma valeur en permanence</label>
+                    </div>
+                </div>
+
+                <!-- Question 15 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 15</div>
+                    <div class="question-text">Vous passez la journée à la maison à faire le ménage et vous occuper des enfants pendant qu'il travaille à l'extérieur. Comment percevez-vous cette situation ?</div>
+                    <div class="option">
+                        <input type="radio" name="q15" value="A" id="q15a">
+                        <label for="q15a">Je suis une martyre - mon travail domestique est épuisant et invisible pendant qu'il a la partie facile au travail</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q15" value="B" id="q15b">
+                        <label for="q15b">Nous avons tous les deux des responsabilités différentes mais importantes - je travaille dans le confort de mon foyer avec mes enfants, lui dans un environnement professionnel stressant</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q15" value="C" id="q15c">
+                        <label for="q15c">Il devrait quand même faire 50% des tâches ménagères en rentrant du travail car l'égalité entre nous est importante</label>
+                    </div>
+                </div>
+
+                <!-- Question 16 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 16</div>
+                    <div class="question-text">Avec vos amies, participez-vous à des conversations où vous critiquez ou moquez les hommes en général ?</div>
+                    <div class="option">
+                        <input type="radio" name="q16" value="A" id="q16a">
+                        <label for="q16a">Oui, c'est une façon normale de créer des liens entre femmes et de libérer nos frustrations quotidiennes</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q16" value="B" id="q16b">
+                        <label for="q16b">Non, je reconnais que c'est souvent pour obtenir l'approbation d'autres femmes, pas par conviction profonde personnelle</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q16" value="C" id="q16c">
+                        <label for="q16c">Oui, les hommes méritent d'être critiqués compte tenu de leurs comportements problématiques fréquents</label>
+                    </div>
+                </div>
+
+                <!-- Question 17 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 17</div>
+                    <div class="question-text">Quand vous voyez sur les réseaux sociaux des messages comme "Je n'ai besoin de personne", "Boss babe", "Je suis ma propre priorité", comment réagissez-vous ?</div>
+                    <div class="option">
+                        <input type="radio" name="q17" value="A" id="q17a">
+                        <label for="q17a">Je trouve ça inspirant et empuissant - c'est le modèle de femme moderne à suivre</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q17" value="B" id="q17b">
+                        <label for="q17b">Je reconnais que ces messages, bien qu'attrayants, peuvent parfois m'éloigner du désir naturel de construire un partenariat authentique</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q17" value="C" id="q17c">
+                        <label for="q17c">C'est exactement ce que je veux incarner - l'indépendance totale est la clé du bonheur</label>
+                    </div>
+                </div>
+
+                <!-- Question 18 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 18</div>
+                    <div class="question-text">Comment réagissez-vous quand une amie dit qu'elle aime prendre soin de son foyer, cuisiner pour son mari et créer une atmosphère chaleureuse ?</div>
+                    <div class="option">
+                        <input type="radio" name="q18" value="A" id="q18a">
+                        <label for="q18a">Je pense intérieurement qu'elle est soumise ou qu'elle ne se respecte pas assez</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q18" value="B" id="q18b">
+                        <label for="q18b">Je respecte son choix - chaque femme exprime sa féminité différemment et c'est tout aussi valable que d'autres choix</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q18" value="C" id="q18c">
+                        <label for="q18c">Je lui fais comprendre subtilement qu'elle pourrait viser plus haut et s'émanciper</label>
+                    </div>
+                </div>
+
+                <!-- Question 19 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 19</div>
+                    <div class="question-text">Après une rupture difficile, comment racontez-vous généralement l'histoire de votre relation passée ?</div>
+                    <div class="option">
+                        <input type="radio" name="q19" value="A" id="q19a">
+                        <label for="q19a">Je raconte les choses de façon équilibrée : nous avons tous les deux contribué aux bons moments et tous les deux fait des erreurs qui ont mené à la rupture. J'assume ma part de responsabilité</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q19" value="B" id="q19b">
+                        <label for="q19b">Mon récit change avec le temps : pendant la relation, je disais que j'étais heureuse, mais maintenant je réalise qu'il m'a exploitée émotionnellement</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q19" value="C" id="q19c">
+                        <label for="q19c">Je me présente comme la victime claire de cette histoire : il m'a utilisée, manipulée, et fait perdre mon temps</label>
+                    </div>
+                </div>
+
+                <!-- Question 20 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 20</div>
+                    <div class="question-text">Dans votre vie quotidienne avec votre partenaire, quelle affirmation vous correspond le mieux ?</div>
+                    <div class="option">
+                        <input type="radio" name="q20" value="A" id="q20a">
+                        <label for="q20a">Je remarque principalement ce qui ne va pas ou ce qui manque - c'est normal de vouloir que les choses s'améliorent</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q20" value="B" id="q20b">
+                        <label for="q20b">Je vois et apprécie consciemment tous les petits efforts quotidiens qu'il fait pour mon bien-être et notre bonheur</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q20" value="C" id="q20c">
+                        <label for="q20c">Honnêtement, je considère que la plupart de ce qu'il fait est normal et attendu - rien qui mérite une reconnaissance particulière</label>
+                    </div>
+                </div>
+
+                <!-- Question 21 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 21</div>
+                    <div class="question-text">Vous êtes financièrement dépendante de votre partenaire car vous avez arrêté de travailler. Comment décririez-vous cette situation ?</div>
+                    <div class="option">
+                        <input type="radio" name="q21" value="A" id="q21a">
+                        <label for="q21a">Il m'a rendue financièrement dépendante de lui au fil du temps. C'est une forme de contrôle et de manipulation financière de sa part</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q21" value="B" id="q21b">
+                        <label for="q21b">J'ai fait le choix conscient et adulte d'accepter cet arrangement. C'était ma décision et c'est ma responsabilité d'en assumer toutes les conséquences</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q21" value="C" id="q21c">
+                        <label for="q21c">Je suis une victime de cette situation car je n'avais pas vraiment d'autre choix possible ou réaliste à l'époque</label>
+                    </div>
+                </div>
+
+                <!-- Question 22 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 22</div>
+                    <div class="question-text">Quand vous repensez à vos décisions passées dans vos relations, quelle affirmation vous correspond le mieux ?</div>
+                    <div class="option">
+                        <input type="radio" name="q22" value="A" id="q22a">
+                        <label for="q22a">J'ai fait de mon mieux avec les informations que j'avais - je ne peux pas me blâmer pour le passé</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q22" value="B" id="q22b">
+                        <label for="q22b">Je reconnais que certains de mes choix n'étaient pas les meilleurs et j'ai activement changé mes comportements depuis</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q22" value="C" id="q22c">
+                        <label for="q22c">Mes erreurs passées sont principalement dues aux hommes qui n'étaient pas à la hauteur</label>
+                    </div>
+                </div>
+
+                <!-- Question 23 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 23</div>
+                    <div class="question-text">Dans vos relations passées, vous avez fréquenté des hommes de très haut statut social qui ne se sont jamais engagés. Aujourd'hui, comment percevez-vous cette période ?</div>
+                    <div class="option">
+                        <input type="radio" name="q23" value="A" id="q23a">
+                        <label for="q23a">J'ai été clairement exploitée et utilisée par ces hommes qui m'ont fait perdre mon temps précieux, ma jeunesse et mes meilleures années</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q23" value="B" id="q23b">
+                        <label for="q23b">J'ai fait des choix en pleine connaissance de cause pour accéder à un certain style de vie luxueux. Je dois assumer l'entière responsabilité de ces décisions et de leurs conséquences</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q23" value="C" id="q23c">
+                        <label for="q23c">Ils m'ont délibérément menti sur leurs véritables intentions et m'ont trompée en me faisant croire à un futur ensemble</label>
+                    </div>
+                </div>
+
+                <!-- Question 24 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 24</div>
+                    <div class="question-text">Vous entamez une nouvelle relation. Comment gérez-vous les blessures ou méfiances de vos expériences passées ?</div>
+                    <div class="option">
+                        <input type="radio" name="q24" value="A" id="q24a">
+                        <label for="q24a">Je reste sur mes gardes et j'observe le moindre signe qui ressemble à mes ex - on n'est jamais trop prudente</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q24" value="B" id="q24b">
+                        <label for="q24b">Je fais un travail personnel pour ne pas faire payer à mon nouveau partenaire les erreurs des précédents - il mérite une page blanche</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q24" value="C" id="q24c">
+                        <label for="q24c">Je lui explique dès le début toutes mes blessures passées et ce qu'il doit faire pour éviter de me blesser à nouveau</label>
+                    </div>
+                </div>
+
+                <!-- Question 25 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 25</div>
+                    <div class="question-text">Concernant vos attentes envers un partenaire, quelle affirmation vous correspond le mieux ?</div>
+                    <div class="option">
+                        <input type="radio" name="q25" value="A" id="q25a">
+                        <label for="q25a">J'ai le droit d'avoir des standards très élevés peu importe mon propre parcours - je mérite ce que je veux</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q25" value="B" id="q25b">
+                        <label for="q25b">Mes attentes doivent être cohérentes avec ce que j'apporte moi-même - c'est une question d'équité et d'honnêteté</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q25" value="C" id="q25c">
+                        <label for="q25c">Mes standards sont basés sur ce que je vois sur les réseaux sociaux et ce que mes amies obtiennent</label>
+                    </div>
+                </div>
+
+                <!-- Question 26 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 26</div>
+                    <div class="question-text">Votre partenaire travaille dans un emploi stressant qu'il n'aime pas particulièrement. Quelle est votre compréhension de cette situation ?</div>
+                    <div class="option">
+                        <input type="radio" name="q26" value="A" id="q26a">
+                        <label for="q26a">S'il n'aime pas son travail, il devrait tout simplement en changer et trouver quelque chose qui le passionne vraiment</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q26" value="B" id="q26b">
+                        <label for="q26b">Je comprends qu'il fait ce sacrifice important en renonçant à sa passion pour assurer notre stabilité et sécurité financière. Je suis reconnaissante de ce sacrifice</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q26" value="C" id="q26c">
+                        <label for="q26c">Ce n'est pas vraiment mon problème - chacun gère sa propre vie professionnelle</label>
+                    </div>
+                </div>
+
+                <!-- Question 27 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 27</div>
+                    <div class="question-text">Votre partenaire reste calme et silencieux durant un conflit entre vous. Comment interprétez-vous ce comportement ?</div>
+                    <div class="option">
+                        <input type="radio" name="q27" value="A" id="q27a">
+                        <label for="q27a">Il est indifférent, détaché émotionnellement, et ne se soucie pas vraiment de nos problèmes de couple</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q27" value="B" id="q27b">
+                        <label for="q27b">Il fait un travail émotionnel énorme pour réguler ses émotions et maintenir la stabilité de notre relation</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q27" value="C" id="q27c">
+                        <label for="q27c">C'est de la manipulation psychologique - il refuse volontairement de s'engager émotionnellement avec moi</label>
+                    </div>
+                </div>
+
+                <!-- Question 28 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 28</div>
+                    <div class="question-text">Vous demandez à votre partenaire de prendre en charge une tâche (par exemple : organisation d'un week-end). Que faites-vous ensuite ?</div>
+                    <div class="option">
+                        <input type="radio" name="q28" value="A" id="q28a">
+                        <label for="q28a">Je lui donne l'autorité et la responsabilité complètes sur cette tâche. Je n'interviens pas dans ses choix, et j'accepte le résultat même s'il diffère de ce que j'aurais fait</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q28" value="B" id="q28b">
+                        <label for="q28b">Je le laisse faire, mais je garde un œil sur ses choix et je n'hésite pas à lui suggérer des améliorations ou des corrections en cours de route</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q28" value="C" id="q28c">
+                        <label for="q28c">Je lui dis 'fais comme tu veux', mais ensuite je critique ou rejette systématiquement ses suggestions car elles ne correspondent pas à ce que j'avais en tête</label>
+                    </div>
+                </div>
+
+                <!-- Question 29 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 29</div>
+                    <div class="question-text">Vous demandez à votre partenaire son avis sincère sur quelque chose qui vous tient à cœur. Qu'attendez-vous réellement ?</div>
+                    <div class="option">
+                        <input type="radio" name="q29" value="A" id="q29a">
+                        <label for="q29a">J'attends qu'il soit honnête, mais je veux surtout qu'il me dise ce que je veux entendre et me rassure</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q29" value="B" id="q29b">
+                        <label for="q29b">J'attends et j'apprécie son avis honnête même s'il diffère du mien - c'est pour cela que je lui demande</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q29" value="C" id="q29c">
+                        <label for="q29c">J'attends qu'il devine que je cherche du soutien émotionnel, pas vraiment son opinion objective</label>
+                    </div>
+                </div>
+
+                <!-- Question 30 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 30</div>
+                    <div class="question-text">Votre partenaire ne se plaint jamais de ses difficultés professionnelles ou financières. Comment interprétez-vous cette attitude ?</div>
+                    <div class="option">
+                        <input type="radio" name="q30" value="A" id="q30a">
+                        <label for="q30a">Il n'a probablement pas de véritables difficultés - sa vie est certainement plus simple et moins stressante que la mienne</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q30" value="B" id="q30b">
+                        <label for="q30b">Je reconnais qu'il porte un poids important en silence par sens de l'honneur, pour ne pas m'accabler avec ses luttes. Je lui exprime ma gratitude</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q30" value="C" id="q30c">
+                        <label for="q30c">C'est de la mauvaise communication. Il devrait tout partager et exprimer ses émotions comme je le fais</label>
+                    </div>
+                </div>
+
+                <!-- Question 31 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 31</div>
+                    <div class="question-text">Vous tombez sur une vidéo Instagram d'une influenceuse qui se plaint du patriarcat et affirme que tous les hommes sont médiocres. Quelle est votre réaction ?</div>
+                    <div class="option">
+                        <input type="radio" name="q31" value="A" id="q31a">
+                        <label for="q31a">Je refuse de mettre tous les hommes dans le même panier. Je comprends que ces contenus servent à obtenir de l'engagement et créent une chambre d'écho toxique</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q31" value="B" id="q31b">
+                        <label for="q31b">Je pense que le patriarcat est l'un des plus gros problèmes des sociétés occidentales actuelles</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q31" value="C" id="q31c">
+                        <label for="q31c">Je suis d'accord : la majorité des hommes sont médiocres et s'organisent pour empêcher les femmes d'accéder au pouvoir</label>
+                    </div>
+                </div>
+
+                <!-- Question 32 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 32</div>
+                    <div class="question-text">Lors d'une dispute avec votre partenaire, quelle est votre première réaction ?</div>
+                    <div class="option">
+                        <input type="radio" name="q32" value="A" id="q32a">
+                        <label for="q32a">Je me remets en question et examine ma propre part de responsabilité avant de pointer les erreurs de mon partenaire</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q32" value="B" id="q32b">
+                        <label for="q32b">Je me sens victime et commence à lister mentalement l'ensemble des torts de mon partenaire</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q32" value="C" id="q32c">
+                        <label for="q32c">Je me défends immédiatement et contre-attaque en trouvant toutes les raisons pour lesquelles c'est sa faute</label>
+                    </div>
+                </div>
+
+                <!-- Question 33 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 33</div>
+                    <div class="question-text">Quand quelque chose ne va pas dans votre couple, comment gérez-vous la situation ?</div>
+                    <div class="option">
+                        <input type="radio" name="q33" value="A" id="q33a">
+                        <label for="q33a">Je formule clairement ce qui ne va pas, avec des exemples concrets et des suggestions constructives. Je contribue activement à la résolution</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q33" value="B" id="q33b">
+                        <label for="q33b">C'est principalement à mon partenaire de mener la réflexion pour améliorer les choses. Ma présence suffit comme contribution</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q33" value="C" id="q33c">
+                        <label for="q33c">Je laisse des indices subtils et j'attends qu'il comprenne tout seul. S'il m'aimait vraiment, il devrait deviner mes besoins</label>
+                    </div>
+                </div>
+
+                <!-- Question 34 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 34</div>
+                    <div class="question-text">Quand vous vous projetez à 40 ans, quelle vision vous correspond le mieux ?</div>
+                    <div class="option">
+                        <input type="radio" name="q34" value="A" id="q34a">
+                        <label for="q34a">Je me vois fière d'avoir construit une relation stable et épanouie, ayant eu le courage d'être vulnérable avec un partenaire de qualité, ayant ignoré les pressions sociales toxiques</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q34" value="B" id="q34b">
+                        <label for="q34b">Je serai fière d'avoir tenu tête à mes partenaires et d'avoir obtenu l'approbation de mes copines en prouvant que je ne me suis jamais 'soumise'</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q34" value="C" id="q34c">
+                        <label for="q34c">Je me vois seule mais 'libre' et 'indépendante', ayant refusé tout compromis relationnel, fière de ne jamais avoir eu besoin d'un homme</label>
+                    </div>
+                </div>
+
+                <!-- Question 35 -->
+                <div class="question-block">
+                    <div class="question-number">QUESTION 35</div>
+                    <div class="question-text">Vous êtes au restaurant en tête-à-tête avec votre partenaire. Comment percevez-vous votre rôle durant ce moment ?</div>
+                    <div class="option">
+                        <input type="radio" name="q35" value="A" id="q35a">
+                        <label for="q35a">Je dois aussi faire un effort pour être agréable, intéressante et stimulante. Je prépare des sujets de conversation, je pose des questions. Je cultive ma personnalité pour être une compagne captivante</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q35" value="B" id="q35b">
+                        <label for="q35b">C'est le rôle d'un homme de trouver des sujets intéressants et de me divertir. Ma contribution est d'être présente et belle</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q35" value="C" id="q35c">
+                        <label for="q35c">Ma seule présence devrait suffire. Le fait que j'aie accepté ce rendez-vous est déjà une contribution importante</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button">Voir mes résultats</button>
+            </form>
+
+            <div class="results" id="results">
+                <div class="score-display">
+                    <div class="score-label">Votre score</div>
+                    <div class="score-number" id="scoreNumber">0%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                <div class="feedback" id="feedbackContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Correct answers
+        const correctAnswers = {
+            q1: 'B', q2: 'B', q3: 'A', q4: 'B', q5: 'B',
+            q6: 'B', q7: 'B', q8: 'B', q9: 'B', q10: 'B',
+            q11: 'B', q12: 'B', q13: 'B', q14: 'B', q15: 'B',
+            q16: 'B', q17: 'B', q18: 'B', q19: 'A', q20: 'B',
+            q21: 'B', q22: 'B', q23: 'B', q24: 'B', q25: 'B',
+            q26: 'B', q27: 'B', q28: 'A', q29: 'B', q30: 'B',
+            q31: 'A', q32: 'A', q33: 'A', q34: 'A', q35: 'A'
+        };
+
+        // Add visual feedback on option selection
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const radio = this.querySelector('input[type="radio"]');
+                const name = radio.name;
+                
+                // Remove selected class from all options in this question
+                document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+                    r.closest('.option').classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                radio.checked = true;
+            });
+        });
+
+        // Form submission
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            let totalQuestions = 35;
+            let answeredQuestions = 0;
+
+            // Check all answers
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = `q${i}`;
+                const selectedAnswer = document.querySelector(`input[name="${questionName}"]:checked`);
+                
+                if (selectedAnswer) {
+                    answeredQuestions++;
+                    if (selectedAnswer.value === correctAnswers[questionName]) {
+                        score++;
+                    }
+                }
+            }
+
+            // Check if all questions are answered
+            if (answeredQuestions < totalQuestions) {
+                alert(`Veuillez répondre à toutes les questions. Vous avez répondu à ${answeredQuestions} sur ${totalQuestions}.`);
+                return;
+            }
+
+            // Calculate percentage
+            const percentage = Math.round((score / totalQuestions) * 100);
+
+            // Display results
+            displayResults(percentage, score, totalQuestions);
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function displayResults(percentage, score, total) {
+            const resultsDiv = document.getElementById('results');
+            const scoreNumber = document.getElementById('scoreNumber');
+            const progressFill = document.getElementById('progressFill');
+            const feedbackContent = document.getElementById('feedbackContent');
+
+            // Show results
+            resultsDiv.classList.add('show');
+
+            // Animate score
+            scoreNumber.textContent = percentage + '%';
+            progressFill.style.width = percentage + '%';
+
+            // Generate feedback based on score
+            let feedback = '';
+            
+            if (percentage >= 0 && percentage <= 40) {
+                feedback = `
+                    <h3>📚 Niveau : Apprentissage nécessaire (${score}/${total} bonnes réponses)</h3>
+                    <p>Vos réponses révèlent une compréhension limitée des dynamiques relationnelles saines et équilibrées. Il est temps d'entreprendre un travail approfondi sur vous-même.</p>
+                    
+                    <p><strong>Analyse directe :</strong></p>
+                    <ul>
+                        <li><strong>Victimisation excessive :</strong> Vous avez tendance à vous percevoir comme victime des circonstances plutôt que d'assumer la responsabilité de vos choix et comportements.</li>
+                        
+                        <li><strong>Communication dysfonctionnelle :</strong> Vos modes de communication (indices subtils, attentes implicites, accusations déguisées) créent confusion et frustration dans vos relations.</li>
+                        
+                        <li><strong>Manque d'empathie masculine :</strong> Vous ne reconnaissez pas les sacrifices, les efforts et la charge mentale que portent les hommes en silence.</li>
+                        
+                        <li><strong>Contribution limitée :</strong> Vous n'avez pas développé une conscience claire de ce que vous apportez concrètement à une relation au-delà de votre simple présence.</li>
+                        
+                        <li><strong>Standards incohérents :</strong> Vos attentes envers les hommes sont élevées tandis que vous minimisez vos propres responsabilités dans un partenariat équilibré.</li>
+                    </ul>
+                    
+                    <p><strong>Prochaines étapes recommandées :</strong></p>
+                    <ul>
+                        <li>Lisez attentivement le document de recommandations et identifiez les comportements toxiques que vous reconnaissez en vous</li>
+                        <li>Pratiquez l'auto-réflexion quotidienne : "Qu'ai-je fait aujourd'hui pour rendre la vie de mon partenaire meilleure ?"</li>
+                        <li>Développez votre communication directe et claire sans attendre que l'autre devine vos besoins</li>
+                        <li>Arrêtez de participer aux conversations qui dénigrent les hommes - cela nourrit votre ressentiment</li>
+                        <li>Assumez la pleine responsabilité de vos choix passés sans réécrire l'histoire en narratif de victimisation</li>
+                    </ul>
+                    
+                    <p><strong>Réalité importante :</strong> Les relations sont transactionnelles, pas inconditionnelles. Si vous voulez un partenaire de qualité qui s'investit, vous devez apporter une valeur réelle et substantielle. La transformation commence par l'honnêteté radicale avec vous-même.</p>
+                `;
+            } else if (percentage >= 41 && percentage <= 70) {
+                feedback = `
+                    <h3>🌱 Niveau : En progression (${score}/${total} bonnes réponses)</h3>
+                    <p>Vous comprenez certains principes fondamentaux des relations saines, mais il reste des zones importantes à améliorer. Vous êtes sur la bonne voie, mais la cohérence fait défaut.</p>
+                    
+                    <p><strong>Analyse directe :</strong></p>
+                    <ul>
+                        <li><strong>Compréhension partielle :</strong> Vous saisissez intellectuellement certains concepts (communication claire, responsabilité personnelle, empathie) mais votre mise en pratique reste inconstante.</li>
+                        
+                        <li><strong>Accountability fluctuante :</strong> Vous reconnaissez parfois votre responsabilité dans les conflits, mais vous retombez régulièrement dans la victimisation ou les accusations.</li>
+                        
+                        <li><strong>Influence sociale persistante :</strong> Vous êtes encore partiellement influencée par les narratifs toxiques des réseaux sociaux et de votre entourage féminin.</li>
+                        
+                        <li><strong>Contribution en développement :</strong> Vous commencez à comprendre que vous devez apporter de la valeur active, mais vous avez encore du mal à le faire de manière consistante.</li>
+                        
+                        <li><strong>Empathie en croissance :</strong> Vous commencez à reconnaître les sacrifices masculins, mais cette reconnaissance n'est pas encore naturelle ou spontanée.</li>
+                    </ul>
+                    
+                    <p><strong>Prochaines étapes recommandées :</strong></p>
+                    <ul>
+                        <li>Identifiez vos zones de faiblesse spécifiques en revoyant les questions où vous avez donné de mauvaises réponses</li>
+                        <li>Pratiquez la cohérence : ne vous contentez pas de comprendre intellectuellement, agissez selon ces principes quotidiennement</li>
+                        <li>Développez votre gratitude active : exprimez concrètement votre appréciation pour les efforts de votre partenaire chaque jour</li>
+                        <li>Challengez vos automatismes toxiques : quand vous sentez la victimisation ou l'accusation monter, faites une pause et reformulez</li>
+                        <li>Cultivez votre contribution unique : développez des compétences relationnelles, domestiques ou émotionnelles qui enrichissent vraiment la vie de votre partenaire</li>
+                    </ul>
+                    
+                    <p><strong>Encouragement :</strong> Vous avez déjà fait un travail important sur vous-même. Continuez dans cette direction. La différence entre comprendre et incarner ces principes fera toute la différence dans la qualité et la durabilité de vos relations.</p>
+                `;
+            } else {
+                feedback = `
+                    <h3>✨ Niveau : Femme de haute valeur (${score}/${total} bonnes réponses)</h3>
+                    <p>Félicitations ! Vous démontrez une compréhension exceptionnelle des dynamiques relationnelles saines, matures et équilibrées. Vous avez développé une conscience rare des pièges modernes et une lucidité remarquable.</p>
+                    
+                    <p><strong>Vos forces distinctives :</strong></p>
+                    <ul>
+                        <li><strong>Accountability authentique :</strong> Vous assumez pleinement la responsabilité de vos choix, comportements et leur impact sur votre relation sans vous victimiser.</li>
+                        
+                        <li><strong>Communication mature :</strong> Vous exprimez vos besoins de manière directe, spécifique et constructive sans manipulations, accusations déguisées ou attentes implicites.</li>
+                        
+                        <li><strong>Empathie masculine développée :</strong> Vous reconnaissez et appréciez les sacrifices, la charge mentale et le travail émotionnel que les hommes portent silencieusement.</li>
+                        
+                        <li><strong>Contribution substantielle :</strong> Vous apportez une valeur réelle et active à votre relation - paix, soutien, gratitude, atmosphère chaleureuse, respect.</li>
+                        
+                        <li><strong>Pensée indépendante :</strong> Vous résistez aux narratifs toxiques des réseaux sociaux et aux pressions sociales qui encouragent l'amertume et la division.</li>
+                        
+                        <li><strong>Standards cohérents :</strong> Vos attentes envers un partenaire sont en harmonie avec ce que vous apportez vous-même.</li>
+                    </ul>
+                    
+                    <p><strong>Vos atouts relationnels :</strong></p>
+                    <ul>
+                        <li>Vous rendez la vie de votre partenaire plus facile et agréable, pas plus difficile</li>
+                        <li>Vous créez une atmosphère de paix et de stabilité émotionnelle dans votre foyer</li>
+                        <li>Vous résolvez les conflits de manière rationnelle sans escalade émotionnelle</li>
+                        <li>Vous exprimez régulièrement votre gratitude et appréciation</li>
+                        <li>Vous ne faites pas payer à votre nouveau partenaire les erreurs des précédents</li>
+                        <li>Vous comprenez la nature transactionnelle des relations et maintenez l'équilibre</li>
+                    </ul>
+                    
+                    <p><strong>Pour maintenir ce niveau d'excellence :</strong></p>
+                    <ul>
+                        <li>Continuez à cultiver votre lucidité et votre honnêteté radicale avec vous-même</li>
+                        <li>Protégez-vous des influences toxiques qui vous tireraient vers le bas</li>
+                        <li>Inspirez d'autres femmes par votre exemple plutôt que par des leçons directes</li>
+                        <li>Approfondissez continuellement votre compréhension des dynamiques masculines-féminines</li>
+                        <li>Restez humble - la complaisance est l'ennemi de la croissance continue</li>
+                    </ul>
+                    
+                    <p><strong>Perspective finale :</strong> Vous êtes le type de femme que les hommes de haute valeur recherchent activement - non pas pour votre apparence physique seule, mais pour votre maturité émotionnelle, votre contribution réelle et votre capacité à créer un partenariat authentiquement équilibré. Continuez sur cette voie avec confiance.</p>
+                `;
+            }
+
+            feedbackContent.innerHTML = feedback;
+        }
+    </script>
+</body>
+</html>
