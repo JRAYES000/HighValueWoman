@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire : Êtes-vous une Femme de Haute Valeur ?</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #FFF5F7 0%, #FFE8EC 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 18px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(220, 53, 69, 0.15);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #D63447 0%, #C1121F 100%);
+            padding: 50px 40px;
+            text-align: center;
+            color: white;
+        }
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .header p {
+            font-size: 1.15em;
+            font-weight: 500;
+        }
+        .progress-section {
+            background: #F5F5F5;
+            padding: 20px 40px;
+            border-bottom: 2px solid #E8E8E8;
+        }
+        .progress-text {
+            font-size: 1em;
+            font-weight: 700;
+            color: #D63447;
+            margin-bottom: 10px;
+        }
+        .progress-container {
+            background: #E8E8E8;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #D63447 0%, #C1121F 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .content {
+            padding: 50px 40px;
+        }
+        .category-badge {
+            display: inline-block;
+            background: #D63447;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .question-text {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #D63447;
+            margin-bottom: 10px;
+        }
+        .question-content {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        .options {
+            margin-bottom: 40px;
+        }
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            background: #F8F9FA;
+            border: 3px solid #E8E8E8;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option-label:hover {
+            background: #FFF5F7;
+            border-color: #D63447;
+            transform: translateX(5px);
+        }
+        .option-label input[type="radio"] {
+            margin-right: 15px;
+            margin-top: 5px;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+        }
+        .option-text {
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+        .navigation {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .btn {
+            flex: 1;
+            padding: 18px 32px;
+            font-size: 1.1em;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #D63447 0%, #C1121F 100%);
+            color: white;
+        }
+        .btn-secondary {
+            background: #6C757D;
+            color: white;
+        }
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #results-content {
+            display: none;
+        }
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #FFF5F7;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        .score-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: #D63447;
+        }
+        .interpretation-box {
+            background: #F8F9FA;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 6px solid #D63447;
+        }
+        .interpretation-box h3 {
+            color: #D63447;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .category-score {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #F8F9FA;
+            border-radius: 12px;
+        }
+        .category-name {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .category-bar-container {
+            background: #E8E8E8;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .category-bar {
+            background: linear-gradient(90deg, #D63447 0%, #C1121F 100%);
+            height: 100%;
+            transition: width 0.8s ease;
+        }
+        .category-value {
+            font-weight: 700;
+            color: #D63447;
+            text-align: right;
+        }
+        .answer-detail {
+            background: #F8F9FA;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 6px solid #D63447;
+        }
+        .answer-points {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 4px 12px;
+            background: #D63447;
+            color: white;
+            border-radius: 12px;
+            font-size: 0.9em;
+            font-weight: 700;
+        }
+        .answer-explanation {
+            margin-top: 10px;
+            padding: 15px;
+            background: #FFF5F7;
+            border-radius: 8px;
+            line-height: 1.7;
+        }
+        @media (max-width: 768px) {
+            body { font-size: 16px; padding: 10px; }
+            .header { padding: 30px 20px; }
+            .header h1 { font-size: 1.6em; }
+            .content { padding: 30px 20px; }
+            .navigation { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ Êtes-vous une Femme de Haute Valeur ? ✨</h1>
+            <p><strong>Découvrez vos forces et vos axes d'amélioration pour construire une relation épanouie et durable</strong></p>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-text" id="progress-text">1 / 35</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="quiz-content">
+                <div id="question-container"></div>
+                <div class="navigation">
+                    <button class="btn btn-secondary" id="prev-btn" onclick="previousQuestion()" disabled>Précédent</button>
+                    <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" disabled>Suivant</button>
+                </div>
+            </div>
+
+            <div id="results-content">
+                <h2 style="text-align:center; color:#D63447; font-size:2.5em; margin-bottom:30px;">🎉 Vos Résultats 🎉</h2>
+                <div class="score-display">
+                    <div class="score-value" id="total-score">0/35</div>
+                    <div class="score-value" id="percentage-score" style="font-size:2em; margin-top:10px;">0%</div>
+                </div>
+                <div class="interpretation-box">
+                    <h3>📊 Interprétation</h3>
+                    <p id="interpretation-text"></p>
+                </div>
+                <div class="interpretation-box">
+                    <h3>💡 Recommandations</h3>
+                    <p id="recommendations-text"></p>
+                </div>
+                <div id="category-scores" style="margin:40px 0;"></div>
+                <div id="detailed-answers"></div>
+                <div class="navigation">
+                    <button class="btn btn-primary" onclick="restartQuiz()">Recommencer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+// Tableau des 35 questions avec réponses détaillées
+const questions = [
+    // CATÉGORIE 1 : Communication & Expression (Q1-Q5)
+    {
+        id: 1,
+        category: "Communication & Expression",
+        question: "Lorsque votre partenaire rentre du travail et semble distant ou préoccupé, quelle est généralement votre première réaction ?",
+        options: [
+            { 
+                text: "Je lui demande immédiatement ce qui ne va pas et j'insiste pour qu'il me parle", 
+                points: 0,
+                explanation: "Forcer immédiatement la conversation peut créer de la pression. Les hommes ont souvent besoin d'un moment de décompression après le travail avant de pouvoir s'ouvrir émotionnellement. Cette approche peut involontairement fermer la communication plutôt que l'ouvrir. Respecter son rythme de traitement émotionnel montre de la maturité relationnelle et favorise une ouverture naturelle quand il sera prêt."
+            },
+            { 
+                text: "Je me sens blessée et je me demande si j'ai fait quelque chose de mal", 
+                points: 0,
+                explanation: "Interpréter automatiquement son état comme étant lié à vous révèle une tendance à la sur-personnalisation. Les hommes vivent aussi des stress extérieurs à la relation. Cette réaction centrée sur soi peut ajouter une charge émotionnelle supplémentaire à sa journée déjà difficile. Développer la capacité à ne pas tout ramener à soi est essentiel pour une relation équilibrée et mature."
+            },
+            { 
+                text: "Je lui laisse de l'espace pour décompresser, puis je me montre disponible s'il veut parler", 
+                points: 1,
+                explanation: "Cette approche démontre une compréhension mature des différences de traitement émotionnel entre partenaires. Offrir de l'espace sans abandon montre du respect pour son processus tout en restant présente et ouverte. C'est l'équilibre idéal entre soutien et autonomie qui favorise une communication saine et volontaire plutôt que forcée."
+            }
+        ]
+    },
+    {
+        id: 2,
+        category: "Communication & Expression",
+        question: "Quand vous exprimez vos sentiments, êtes-vous consciente de l'impact émotionnel de vos mots sur votre partenaire ?",
+        options: [
+            { text: "Rarement, j'ai besoin d'exprimer ce que je ressens sur le moment", points: 0 },
+            { text: "Parfois, mais mes émotions prennent souvent le dessus", points: 0 },
+            { text: "Oui, je choisis mes mots avec soin même dans les moments difficiles", points: 1 }
+        ]
+    },
+    {
+        id: 3,
+        category: "Communication & Expression",
+        question: "À quelle fréquence reconnaissez-vous verbalement les efforts quotidiens de votre partenaire (travail, tâches, attention) ?",
+        options: [
+            { 
+                text: "Rarement, je considère que c'est normal ou attendu", 
+                points: 0,
+                explanation: "Considérer les efforts comme « normaux » crée une dynamique où le partenaire devient invisible dans ses contributions. Cette absence de reconnaissance érode progressivement la motivation et l'engagement. Les recherches montrent que le manque d'appréciation est l'un des facteurs principaux de désengagement dans les couples. Même les efforts quotidiens méritent d'être vus et valorisés pour maintenir une relation vivante et épanouissante."
+            },
+            { 
+                text: "Occasionnellement, quand quelque chose de particulier se produit", 
+                points: 0,
+                explanation: "Attendre des événements exceptionnels pour exprimer de la reconnaissance laisse dans l'ombre 95% des efforts quotidiens. Les petites attentions régulières construisent l'intimité bien plus que les grands gestes occasionnels. Une reconnaissance sporadique peut même créer de la frustration car elle montre que vous pouvez voir les efforts, mais choisissez de ne pas toujours les reconnaître."
+            },
+            { 
+                text: "Régulièrement, j'exprime ma gratitude pour ses contributions grandes et petites", 
+                points: 1,
+                explanation: "La reconnaissance régulière et spécifique est un pilier fondamental des relations durables selon les recherches de Gottman. Verbaliser l'appréciation crée un climat émotionnel positif qui renforce le lien et encourage la réciprocité. Cette habitude démontre que vous voyez réellement votre partenaire et valorisez ses efforts, ce qui nourrit profondément le sentiment d'être important dans la relation."
+            }
+        ]
+    },
+    {
+        id: 4,
+        category: "Communication & Expression",
+        question: "Lorsque vous avez une journée difficile, comment communiquez-vous vos besoins émotionnels à votre partenaire ?",
+        options: [
+            { text: "J'attends qu'il devine ce dont j'ai besoin", points: 0 },
+            { text: "J'exprime ma frustration de manière indirecte", points: 0 },
+            { text: "Je communique clairement ce qui m'aiderait à me sentir mieux", points: 1 }
+        ]
+    },
+    {
+        id: 5,
+        category: "Communication & Expression",
+        question: "Pensez-vous que votre partenaire se sent en sécurité pour exprimer ses vulnérabilités sans crainte de jugement ou de critique ?",
+        options: [
+            { 
+                text: "Non, j'ai tendance à réagir émotionnellement ou à minimiser", 
+                points: 0,
+                explanation: "Réagir avec émotion intense ou minimiser les vulnérabilités masculines crée un environnement relationnel dangereux pour l'ouverture émotionnelle. Les hommes apprennent rapidement qu'exprimer leurs faiblesses peut être utilisé contre eux ou déclencher de l'anxiété chez leur partenaire. Cette dynamique les pousse à se refermer et à gérer seuls leurs difficultés, créant une distance émotionnelle progressive. Une relation saine nécessite un espace sûr bidirectionnel où la vulnérabilité est accueillie avec compassion, non avec jugement."
+            },
+            { 
+                text: "Parfois, cela dépend de mon état émotionnel du moment", 
+                points: 0,
+                explanation: "L'inconsistance émotionnelle crée une incertitude qui est aussi dommageable que le rejet constant. Votre partenaire ne peut pas prédire si son ouverture sera accueillie avec soutien ou réactivité, ce qui génère de l'anxiété et l'encourage à garder ses vulnérabilités pour lui. La sécurité émotionnelle nécessite une prévisibilité : savoir que l'autre sera un port stable peu importe les tempêtes intérieures. Travailler votre régulation émotionnelle est essentiel pour devenir ce refuge fiable."
+            },
+            { 
+                text: "Oui, j'accueille ses émotions avec empathie et sans jugement", 
+                points: 1,
+                explanation: "Créer un espace émotionnellement sûr est l'un des plus beaux cadeaux relationnels. Lorsqu'un homme sait que ses vulnérabilités seront accueillies avec compassion plutôt que jugement, il peut authentiquement s'ouvrir et créer une intimité profonde. Cette sécurité psychologique permet une connexion émotionnelle réelle où les masques peuvent tomber. Vous devenez son refuge dans un monde qui exige souvent de lui une force constante, créant un lien unique et irremplaçable."
+            }
+        ]
+    },
+
+    // CATÉGORIE 2 : Gestion des Conflits (Q6-Q10)
+    {
+        id: 6,
+        category: "Gestion des Conflits",
+        question: "Durant un désaccord, qui généralement élève la voix ou introduit le ton émotionnel le plus intense ?",
+        options: [
+            { 
+                text: "Moi, j'ai du mal à contrôler mes émotions dans ces moments", 
+                points: 0,
+                explanation: "L'escalade émotionnelle transforme les désaccords en combats destructeurs. Les recherches de Gottman montrent que les femmes sont statistiquement plus susceptibles d'initier la critique, le mépris et l'intensité émotionnelle dans les conflits. Cette réactivité émotionnelle déclenche le retrait masculin ou l'escalade défensive. Apprendre la régulation émotionnelle n'est pas une suppression des sentiments, mais une compétence relationnelle essentielle qui permet de résoudre les problèmes sans détruire la connexion. Votre capacité à gérer votre intensité détermine directement la santé de votre relation."
+            },
+            { 
+                text: "Lui, il devient souvent défensif ou frustré", 
+                points: 0,
+                explanation: "Cette perception mérite d'être examinée avec honnêteté : sa défensivité est-elle initiale ou réactionnelle ? Souvent, ce qui est perçu comme « devenir défensif » est en réalité une réponse à une approche critique ou accusatrice. Les hommes ont généralement une meilleure régulation émotionnelle initiale dans les conflits. Observer objectivement la séquence des événements peut révéler que votre approche du conflit génère la réaction défensive que vous critiquez ensuite. La responsabilité commence par reconnaître votre rôle dans la dynamique conflictuelle."
+            },
+            { 
+                text: "Nous restons généralement calmes et discutons rationnellement", 
+                points: 1,
+                explanation: "La capacité à maintenir un dialogue calme même dans le désaccord est le marqueur des couples résilients et durables. Cette régulation émotionnelle mutuelle permet de résoudre les problèmes réels plutôt que de créer de nouveaux conflits autour de la manière de communiquer. Vous démontrez une maturité émotionnelle qui transforme les conflits en opportunités de compréhension mutuelle. Cette compétence rare protège votre relation des quatre cavaliers de l'apocalypse relationnelle identifiés par Gottman : critique, mépris, défensivité et obstruction."
+            }
+        ]
+    },
+    {
+        id: 7,
+        category: "Gestion des Conflits",
+        question: "Quand vous êtes en colère, utilisez-vous parfois le sarcasme, les critiques ou des remarques blessantes ?",
+        options: [
+            { text: "Oui, c'est difficile de filtrer mes mots quand je suis bouleversée", points: 0 },
+            { text: "Parfois, mais je regrette ensuite", points: 0 },
+            { text: "Non, je fais attention à ne pas dire des choses que je ne peux pas reprendre", points: 1 }
+        ]
+    },
+    {
+        id: 8,
+        category: "Gestion des Conflits",
+        question: "Après une dispute, qui fait généralement le premier pas pour réparer la relation ?",
+        options: [
+            { text: "Toujours lui, j'ai du mal à lâcher prise", points: 0 },
+            { text: "Cela varie selon qui se sent le plus coupable", points: 0 },
+            { text: "Nous prenons tous les deux l'initiative de réparer rapidement", points: 1 }
+        ]
+    },
+    {
+        id: 9,
+        category: "Gestion des Conflits",
+        question: "Lorsque votre partenaire se retire ou devient silencieux pendant un conflit, comment interprétez-vous ce comportement ?",
+        options: [
+            { text: "Comme un manque d'intérêt ou un refus de résoudre le problème", points: 0 },
+            { text: "Comme une tentative de me punir ou de contrôler la situation", points: 0 },
+            { text: "Comme un besoin de temps pour traiter ses émotions", points: 1 }
+        ]
+    },
+    {
+        id: 10,
+        category: "Gestion des Conflits",
+        question: "Êtes-vous capable de vous excuser sincèrement quand vous reconnaissez avoir eu tort ?",
+        options: [
+            { text: "Difficilement, j'ai tendance à justifier mes actions", points: 0 },
+            { text: "Oui, mais j'attends qu'il s'excuse aussi en premier", points: 0 },
+            { text: "Oui, je peux reconnaître mes torts indépendamment de ses actions", points: 1 }
+        ]
+    },
+
+    // CATÉGORIE 3 : Rôles & Contribution (Q11-Q15)
+    {
+        id: 11,
+        category: "Rôles & Contribution",
+        question: "Considérez-vous que la contribution de votre partenaire (financière, domestique, émotionnelle) est équitable dans votre relation ?",
+        options: [
+            { 
+                text: "Non, je fais plus que ma part", 
+                points: 0,
+                explanation: "Cette perception mérite un examen honnête et objectif. Faites-vous réellement plus, ou voyez-vous simplement mieux vos propres contributions que celles de votre partenaire ? Les études montrent que nous surestimons nos propres efforts et sous-estimons ceux des autres. Listez concrètement toutes ses contributions : financières, réparations, maintenance, planification, protection, charge mentale masculine. Les hommes portent souvent des fardeaux invisibles (pression de performance, stress financier, responsabilité de résoudre les problèmes) qui ne sont pas comptabilisés dans l'équité perçue. La gratitude commence par voir ce qui est là, pas seulement ce qui manque."
+            },
+            { 
+                text: "Oui, mais je pourrais mieux reconnaître ses efforts", 
+                points: 0,
+                explanation: "Reconnaître mentalement que vous pourriez faire mieux est un bon premier pas, mais cela reste insuffisant sans action concrète. La reconnaissance n'a de valeur que lorsqu'elle est exprimée et que votre partenaire peut la recevoir. Les intentions ne nourrissent pas une relation, seules les actions le font. Passez de la conscience intellectuelle à l'expression régulière et spécifique de gratitude. Votre partenaire ne peut pas lire vos pensées ; ce qui n'est pas communiqué n'existe pas dans la dynamique relationnelle."
+            },
+            { 
+                text: "Oui, j'apprécie et valorise régulièrement ce qu'il apporte", 
+                points: 1,
+                explanation: "La capacité à voir objectivement et à valoriser les contributions de votre partenaire est une compétence relationnelle majeure. Cette appréciation crée un cycle vertueux : la reconnaissance encourage plus d'efforts, qui génèrent plus de gratitude. Vous évitez le piège du comptage transactionnel qui empoisonne de nombreuses relations. En valorisant ce qu'il apporte plutôt qu'en vous fixant sur ce qui manque, vous créez un climat émotionnel positif qui nourrit l'engagement mutuel et le désir de contribuer toujours plus à la relation."
+            }
+        ]
+    },
+    {
+        id: 12,
+        category: "Rôles & Contribution",
+        question: "Reconnaissez-vous que votre partenaire peut avoir des formes de stress ou de pression (travail, responsabilités) que vous ne vivez pas directement ?",
+        options: [
+            { 
+                text: "Rarement, je pense que nous avons des charges comparables", 
+                points: 0,
+                explanation: "L'égalitarisme rigide ignore les différences réelles dans les types de pression vécus. Les hommes portent souvent une pression de performance constante : être le protecteur, le résolveur de problèmes, la stabilité financière. Cette charge mentale masculine est invisible mais épuisante. Comparer directement vos stress respectifs sans reconnaître leurs natures différentes crée du ressentiment mutuel. Deux personnes peuvent être également fatiguées pour des raisons différentes. La compassion nécessite de reconnaître l'expérience unique de l'autre, pas de la minimiser par comparaison."
+            },
+            { 
+                text: "Parfois, mais je me concentre surtout sur mes propres difficultés", 
+                points: 0,
+                explanation: "Le centrage sur soi est naturel mais limite la profondeur de connexion possible dans une relation. Lorsque vous restez principalement focalisée sur vos propres difficultés, vous ratez des opportunités de soutien mutuel et de compréhension profonde. Cette posture peut involontairement communiquer que vos expériences comptent plus que les siennes. Développer la capacité à sortir de votre propre perspective pour vraiment voir sa réalité crée une intimité authentique et un partenariat équilibré où chacun se sent compris."
+            },
+            { 
+                text: "Oui, je cherche activement à comprendre et soutenir ses défis spécifiques", 
+                points: 1,
+                explanation: "L'empathie active et la curiosité envers l'expérience unique de votre partenaire sont des fondations solides pour une relation profonde. Chercher à comprendre ses stress spécifiques, même s'ils diffèrent des vôtres, démontre une maturité émotionnelle rare. Cette approche crée un partenariat où chacun se sent véritablement vu et soutenu dans sa réalité unique. Vous transcendez la compétition des souffrances pour créer une alliance où les forces de chacun compensent les vulnérabilités de l'autre."
+            }
+        ]
+    },
+    {
+        id: 13,
+        category: "Rôles & Contribution",
+        question: "Prenez-vous des initiatives pour contribuer activement au bien-être de la relation, ou attendez-vous que votre partenaire prenne les devants ?",
+        options: [
+            { 
+                text: "J'attends souvent qu'il initie les gestes romantiques ou les améliorations", 
+                points: 0,
+                explanation: "La passivité relationnelle crée une dynamique déséquilibrée où votre partenaire devient responsable de la qualité émotionnelle de la relation. Cette posture transforme la relation en service plutôt qu'en partenariat. Attendre constamment son initiative communique un désengagement et place une charge disproportionnée sur lui. Les relations épanouissantes nécessitent une co-création active où chacun investit intentionnellement dans la connexion. Votre partenaire n'est pas le directeur du bonheur relationnel ; vous êtes co-auteure de cette histoire."
+            },
+            { 
+                text: "Parfois je prends l'initiative, mais je pourrais faire plus", 
+                points: 0,
+                explanation: "La conscience d'un déséquilibre sans changement d'action est une forme de complaisance. Reconnaître que vous pourriez faire plus mais ne pas le faire révèle soit un manque de priorité accordée à la relation, soit une résistance à sortir de votre zone de confort. Les petites initiatives régulières construisent l'intimité bien plus que les grands gestes occasionnels. Passer de l'intention à l'action cohérente transformera qualitativement votre relation. Chaque jour offre des opportunités simples de nourrir activement la connexion."
+            },
+            { 
+                text: "Oui, je suis proactive dans la création de moments positifs et l'amélioration continue", 
+                points: 1,
+                explanation: "L'initiative relationnelle proactive est un marqueur de maturité et d'engagement authentique. Vous ne vous contentez pas de réagir ou d'attendre ; vous créez activement la qualité de votre relation. Cette approche transforme la relation en projet commun où chacun investit intentionnellement. Votre partenaire ressent qu'il n'est pas seul à porter le poids de la connexion émotionnelle, ce qui allège sa charge et renforce son engagement. Les relations exceptionnelles ne sont jamais accidentelles ; elles sont construites par des actions quotidiennes intentionnelles."
+            }
+        ]
+    },
+    {
+        id: 14,
+        category: "Rôles & Contribution",
+        question: "Discutez-vous ouvertement et négociez-vous les responsabilités domestiques, ou supposez-vous qu'elles devraient être évidentes ?",
+        options: [
+            { text: "Je suppose qu'il devrait savoir ce qui doit être fait", points: 0 },
+            { text: "Nous en parlons seulement quand des tensions surgissent", points: 0 },
+            { text: "Nous avons des conversations régulières et ajustons selon l'évolution de nos vies", points: 1 }
+        ]
+    },
+    {
+        id: 15,
+        category: "Rôles & Contribution",
+        question: "Valorisez-vous les contributions de votre partenaire même si elles ne correspondent pas exactement à vos attentes ou méthodes ?",
+        options: [
+            { text: "Non, je critique souvent sa façon de faire", points: 0 },
+            { text: "J'essaie, mais j'ai du mal à ne pas le corriger", points: 0 },
+            { text: "Oui, j'apprécie l'effort même si le résultat diffère de ma méthode", points: 1 }
+        ]
+    },
+
+    // CATÉGORIE 4 : Identité & Conditionnement (Q16-Q20)
+    {
+        id: 16,
+        category: "Identité & Conditionnement",
+        question: "Pensez-vous que les médias, les réseaux sociaux ou vos cercles sociaux influencent vos attentes envers votre partenaire ?",
+        options: [
+            { text: "Probablement plus que je ne le réalise", points: 0 },
+            { text: "Un peu, mais j'essaie de rester objective", points: 0 },
+            { text: "Je suis consciente de ces influences et je filtre activement ces messages", points: 1 }
+        ]
+    },
+    {
+        id: 17,
+        category: "Identité & Conditionnement",
+        question: "Avez-vous déjà remis en question les messages culturels modernes sur ce que signifie être une 'femme forte et indépendante' dans une relation de couple ?",
+        options: [
+            { text: "Non, je pense que l'indépendance totale est toujours positive", points: 0 },
+            { text: "Parfois, je me demande si certains messages créent plus de distance qu'autre chose", points: 0 },
+            { text: "Oui, je comprends que force et vulnérabilité, indépendance et interdépendance peuvent coexister", points: 1 }
+        ]
+    },
+    {
+        id: 18,
+        category: "Identité & Conditionnement",
+        question: "Êtes-vous capable d'examiner objectivement si certaines de vos croyances sur les relations viennent de votre éducation, de vos amies ou des médias plutôt que de votre propre réflexion ?",
+        options: [
+            { text: "Rarement, j'ai tendance à considérer mes opinions comme simplement vraies", points: 0 },
+            { text: "Parfois, mais c'est inconfortable de remettre en question mes certitudes", points: 0 },
+            { text: "Oui, je réfléchis régulièrement à l'origine de mes croyances et les ajuste si nécessaire", points: 1 }
+        ]
+    },
+    {
+        id: 19,
+        category: "Identité & Conditionnement",
+        question: "Critiquez-vous parfois les hommes en général (leurs comportements, leurs choix) dans vos conversations avec vos amies ?",
+        options: [
+            { 
+                text: "Oui, c'est assez courant dans nos discussions", 
+                points: 0,
+                explanation: "Participer régulièrement à des conversations qui dénigrent les hommes crée un conditionnement toxique qui affecte inévitablement votre relation. Ce 'male-bashing' culturellement accepté érode progressivement votre respect et votre empathie pour votre partenaire. Vous internalisez ces messages négatifs qui deviennent des lunettes déformantes à travers lesquelles vous interprétez ses actions. Les cercles sociaux qui normalisent la critique masculine ne soutiennent pas votre relation ; ils la sabotent lentement. Choisir consciemment des conversations qui honorent plutôt que rabaissent protège votre capacité à voir et apprécier votre partenaire clairement."
+            },
+            { 
+                text: "Parfois, mais je n'y vois pas de mal puisque c'est général", 
+                points: 0,
+                explanation: "Penser que la critique généralisée est inoffensive parce qu'elle ne vise pas spécifiquement votre partenaire révèle une incompréhension des mécanismes psychologiques. Ces conversations créent des schémas de pensée négatifs qui infiltrent subtilement votre perception. Vous ne pouvez pas compartimenter : critiquer 'les hommes' affecte comment vous voyez 'votre homme'. Cette normalisation culturelle du mépris masculin crée un terrain toxique pour l'intimité. Imaginez l'inverse : votre partenaire participait régulièrement à des conversations dénigrant les femmes. Ressentiriez-vous que c'est inoffensif ?"
+            },
+            { 
+                text: "Non, je refuse de participer à ces dynamiques négatives", 
+                points: 1,
+                explanation: "Refuser de participer au 'male-bashing' culturellement accepté demande du courage et une conscience claire. Vous reconnaissez que ces dynamiques, même socialement normalisées, sont corrosives pour votre capacité à aimer et respecter authentiquement. Cette position protège votre relation en maintenant un espace mental positif envers votre partenaire. Vous comprenez que les cercles qui encouragent le mépris masculin ne sont pas des espaces sains pour cultiver une relation amoureuse épanouissante. Votre refus contribue aussi à changer cette culture toxique."
+            }
+        ]
+    },
+    {
+        id: 20,
+        category: "Identité & Conditionnement",
+        question: "Avez-vous réfléchi à comment votre propre évolution personnelle (carrière, valeurs, objectifs) impacte votre relation, et en discutez-vous avec votre partenaire ?",
+        options: [
+            { text: "Non, je pense que mon évolution personnelle ne devrait pas être limitée par la relation", points: 0 },
+            { text: "Parfois, mais je privilégie mon développement personnel", points: 0 },
+            { text: "Oui, je cherche à grandir personnellement tout en cultivant une évolution harmonieuse du couple", points: 1 }
+        ]
+    },
+
+    // CATÉGORIE 5 : Passé & Responsabilité (Q21-Q25)
+    {
+        id: 21,
+        category: "Passé & Responsabilité",
+        question: "Reconnaissez-vous que vous pourriez apporter des 'bagages' émotionnels de relations passées ou de votre histoire familiale dans votre relation actuelle ?",
+        options: [
+            { 
+                text: "Non, je pense que mes réactions sont toujours justifiées par le présent", 
+                points: 0,
+                explanation: "Le déni des bagages émotionnels est lui-même un bagage majeur. Nous apportons tous des schémas inconscients, des blessures non résolues et des mécanismes de défense de notre passé. Croire que vos réactions sont purement objectives et justifiées empêche toute croissance personnelle et transformation relationnelle. Vos déclencheurs intenses révèlent souvent des blessures anciennes réactivées, pas seulement la situation présente. Sans cette conscience, vous condamnez votre partenaire à payer pour les fautes d'autres personnes de votre passé, créant un cycle d'injustice relationnelle."
+            },
+            { 
+                text: "Peut-être, mais je préfère ne pas trop y penser", 
+                points: 0,
+                explanation: "L'évitement conscient de l'auto-examen garantit que vos bagages continueront à saboter votre relation actuelle. Les blessures non examinées ne guérissent pas avec le temps ; elles s'enkystent et se manifestent de manière imprévisible. Cette fuite face à l'introspection place votre partenaire dans une position impossible : comment répondre adéquatement à des réactions qui ne sont pas vraiment causées par lui ? Le courage d'examiner votre histoire émotionnelle est un cadeau à votre relation, pas une faiblesse."
+            },
+            { 
+                text: "Oui, je travaille activement à identifier et guérir ces blessures", 
+                points: 1,
+                explanation: "La conscience et le travail actif sur vos bagages émotionnels démontrent une maturité psychologique exceptionnelle. Reconnaître que vous apportez des schémas de votre passé vous permet de les distinguer des dynamiques actuelles et de ne pas punir votre partenaire pour des blessures qu'il n'a pas causées. Ce travail de guérison personnelle est le plus grand investissement possible dans votre relation. Vous créez un espace où l'authenticité peut émerger sans être constamment contaminée par des fantômes du passé. Cette responsabilité personnelle transforme la qualité relationnelle."
+            }
+        ]
+    },
+    {
+        id: 22,
+        category: "Passé & Responsabilité",
+        question: "Lorsque la relation traverse des difficultés, examinez-vous honnêtement votre propre contribution au problème avant de blâmer votre partenaire ?",
+        options: [
+            { text: "Rarement, j'ai tendance à voir d'abord ce qu'il fait de mal", points: 0 },
+            { text: "Parfois, après avoir exprimé mes frustrations envers lui", points: 0 },
+            { text: "Oui, je commence toujours par examiner ma propre responsabilité dans la dynamique", points: 1 }
+        ]
+    },
+    {
+        id: 23,
+        category: "Passé & Responsabilité",
+        question: "Utilisez-vous parfois des erreurs passées de votre partenaire comme arguments durant des conflits actuels ?",
+        options: [
+            { 
+                text: "Oui, il est difficile d'oublier ce qu'il a fait avant", 
+                points: 0,
+                explanation: "Ressusciter constamment les erreurs passées transforme chaque nouveau conflit en procès historique où votre partenaire ne peut jamais gagner. Cette accumulation crée une dette émotionnelle impossible à rembourser et communique que le pardon n'existe pas dans votre relation. Aucun changement ou effort présent n'est jamais suffisant puisque le passé est continuellement ramené. Cette dynamique érode profondément l'espoir et la motivation de s'améliorer. Si vous ne pouvez pas vraiment pardonner, vous devez soit résoudre cette blessure, soit accepter que vous sabotez activement la possibilité d'un avenir différent."
+            },
+            { 
+                text: "Parfois, quand je suis très contrariée", 
+                points: 0,
+                explanation: "Utiliser les erreurs passées comme munitions émotionnelles dans les moments de colère révèle un manque de régulation émotionnelle et de fair-play relationnel. Cette stratégie transforme vos archives mentales en arsenal pour blesser plutôt qu'en apprentissages pour grandir. Votre partenaire apprend qu'aucune erreur n'est jamais vraiment pardonnée et que toute vulnérabilité ou faute sera stockée pour usage futur. Cette insécurité constante empêche l'authenticité et la prise de risque nécessaire pour une relation vivante. Les conflits doivent rester focalisés sur le présent pour être résolvables."
+            },
+            { 
+                text: "Non, je m'efforce de traiter chaque situation sur ses propres mérites", 
+                points: 1,
+                explanation: "La capacité à maintenir les conflits dans le présent et à juger chaque situation sur ses propres mérites démontre une maturité émotionnelle rare. Vous comprenez que le véritable pardon signifie ne pas archiver les fautes pour usage ultérieur. Cette approche permet des résolutions authentiques et donne à votre partenaire l'espace pour évoluer réellement. Chaque jour devient une nouvelle opportunité plutôt qu'une continuation du procès interminable du passé. Cette équité crée un environnement où la croissance mutuelle est possible et où les deux partenaires se sentent en sécurité pour être imparfaits et humains."
+            }
+        ]
+    },
+    {
+        id: 24,
+        category: "Passé & Responsabilité",
+        question: "Êtes-vous capable de pardonner authentiquement les erreurs de votre partenaire, ou gardez-vous un registre mental de ses fautes ?",
+        options: [
+            { text: "Je garde souvent un compte mental de qui a fait quoi", points: 0 },
+            { text: "J'essaie de pardonner, mais les souvenirs refont surface dans les conflits", points: 0 },
+            { text: "Oui, quand je pardonne, je lâche vraiment prise et je n'utilise pas le passé contre lui", points: 1 }
+        ]
+    },
+    {
+        id: 25,
+        category: "Passé & Responsabilité",
+        question: "Acceptez-vous que vous et votre partenaire êtes tous deux en évolution constante, et que les erreurs font partie du processus de croissance ?",
+        options: [
+            { text: "Difficilement, j'attends qu'il soit déjà la version idéale de lui-même", points: 0 },
+            { text: "Intellectuellement oui, mais émotionnellement j'ai du mal avec ses imperfections", points: 0 },
+            { text: "Oui, je vois les erreurs comme des opportunités d'apprentissage pour nous deux", points: 1 }
+        ]
+    },
+
+    // CATÉGORIE 6 : Compréhension de l'Expérience Masculine (Q26-Q30)
+    {
+        id: 26,
+        category: "Compréhension de l'Expérience Masculine",
+        question: "Pensez-vous avoir une compréhension profonde et empathique de ce que signifie être un homme dans le contexte social actuel ?",
+        options: [
+            { 
+                text: "Non, je me concentre principalement sur l'expérience féminine", 
+                points: 0,
+                explanation: "L'empathie unidirectionnelle crée une relation déséquilibrée où une seule perspective compte vraiment. Les hommes naviguent des pressions sociales intenses : attentes de performance constante, stigmatisation de la vulnérabilité, responsabilité de la protection et du succès financier, messages culturels contradictoires sur la masculinité. Ne pas chercher à comprendre leur réalité vous maintient dans une bulle égocentrique où votre partenaire reste émotionnellement invisible. La vraie intimité nécessite une curiosité authentique pour l'expérience unique de l'autre, même et surtout quand elle diffère radicalement de la vôtre."
+            },
+            { 
+                text: "J'y pense occasionnellement, mais ce n'est pas une priorité", 
+                points: 0,
+                explanation: "Reléguer la compréhension de l'expérience masculine à une pensée occasionnelle révèle un déséquilibre fondamental dans votre approche relationnelle. Votre partenaire vit sa réalité masculine 24/7, pas occasionnellement. Cette asymétrie d'intérêt et d'empathie crée inévitablement un sentiment de solitude et d'invisibilité chez lui. Comment peut-il se sentir profondément connu et aimé si son expérience fondamentale n'est pas une priorité pour vous ? L'amour mature nécessite un intérêt soutenu et actif pour la réalité intérieure de l'autre, pas une curiosité sporadique."
+            },
+            { 
+                text: "Oui, je cherche activement à comprendre ses défis et pressions spécifiques", 
+                points: 1,
+                explanation: "La curiosité active et l'empathie pour l'expérience masculine spécifique de votre partenaire sont des piliers d'une connexion profonde et authentique. Vous reconnaissez que comprendre vraiment quelqu'un nécessite de sortir de votre propre cadre de référence pour habiter, même temporairement, sa réalité. Cette posture crée un espace relationnel où il peut se sentir véritablement vu, compris et valorisé dans sa différence. Votre empathie devient un refuge où il peut exister pleinement sans avoir à traduire constamment son expérience en termes féminins pour être entendu."
+            }
+        ]
+    },
+    {
+        id: 27,
+        category: "Compréhension de l'Expérience Masculine",
+        question: "Reconnaissez-vous que certaines attentes traditionnelles envers les hommes (être fort, être le pourvoyeur, ne pas montrer ses émotions) créent des pressions spécifiques ?",
+        options: [
+            { text: "Non, je pense que les hommes ont plus de privilèges que de pressions", points: 0 },
+            { text: "Un peu, mais je pense que les femmes ont plus de défis", points: 0 },
+            { text: "Oui, je vois ces attentes contradictoires et le fardeau qu'elles créent", points: 1 }
+        ]
+    },
+    {
+        id: 28,
+        category: "Compréhension de l'Expérience Masculine",
+        question: "Êtes-vous consciente que vous pourriez bénéficier de certains 'double standards' qui favorisent les femmes (ex: empathie sociale, bénéfice du doute dans les conflits) ?",
+        options: [
+            { 
+                text: "Non, je ne pense pas que de tels avantages existent", 
+                points: 0,
+                explanation: "Nier l'existence de privilèges féminins tout en étant consciente des privilèges masculins révèle un angle mort idéologique majeur. Les femmes bénéficient socialement de : présomption d'innocence dans les conflits, empathie par défaut, valorisation automatique de leur parentalité, accès aux émotions sans stigmatisation, soutien social structuré, leniency dans le système judiciaire. Reconnaître ces avantages n'invalide pas les défis féminins ; cela démontre une pensée nuancée capable de tenir des complexités. Le refus de voir vos propres privilèges maintient une posture victimaire qui empêche l'équité relationnelle authentique."
+            },
+            { 
+                text: "Peut-être, mais les privilèges masculins sont plus importants", 
+                points: 0,
+                explanation: "Minimiser les privilèges féminins par comparaison avec les masculins est une forme sophistiquée de déni. Cette hiérarchisation compétitive des souffrances empêche la reconnaissance honnête des dynamiques réelles. Votre partenaire vit ses désavantages spécifiques intensément, peu importe si théoriquement d'autres privilèges existent ailleurs. Cette posture comparative communique : 'Tes difficultés ne comptent pas vraiment parce que j'ai décidé que les miennes sont pires.' C'est une fermeture empathique déguisée en analyse sociale. La vraie maturité reconnaît que les deux genres ont des privilèges ET des fardeaux spécifiques."
+            },
+            { 
+                text: "Oui, je reconnais que les deux genres ont des avantages et désavantages", 
+                points: 1,
+                explanation: "La capacité à reconnaître honnêtement les privilèges et désavantages des deux genres démontre une pensée mature et nuancée, libre de l'idéologie simpliste. Cette reconnaissance crée une base d'équité pour votre relation où les difficultés spécifiques de chacun peuvent être validées sans compétition victimaire. Vous échappez au piège de la hiérarchisation des souffrances qui empoisonne tant de dynamiques relationnelles. Cette honnêteté intellectuelle vous permet d'apporter de la compassion authentique pour l'expérience unique de votre partenaire sans sentir que cela diminue la légitimité de votre propre expérience."
+            }
+        ]
+    },
+    {
+        id: 29,
+        category: "Compréhension de l'Expérience Masculine",
+        question: "Valorisez-vous les qualités traditionnellement masculines de votre partenaire (force, résolution de problèmes, protection), ou les considérez-vous comme acquises ou dépassées ?",
+        options: [
+            { text: "Je les trouve souvent dépassées ou problématiques", points: 0 },
+            { text: "Je ne les remarque pas vraiment", points: 0 },
+            { text: "Oui, j'apprécie ces qualités et je les lui exprime régulièrement", points: 1 }
+        ]
+    },
+    {
+        id: 30,
+        category: "Compréhension de l'Expérience Masculine",
+        question: "Comprenez-vous que les hommes peuvent traiter et exprimer l'amour différemment (par l'action, la résolution de problèmes, la provision) plutôt que principalement par les mots et l'expression émotionnelle ?",
+        options: [
+            { 
+                text: "Non, je juge souvent son amour selon mes propres critères d'expression", 
+                points: 0,
+                explanation: "Juger l'amour de votre partenaire uniquement selon vos critères féminins d'expression crée une injustice fondamentale et une cécité relationnelle. Les hommes démontrent souvent l'amour par l'action : travailler dur pour assurer la sécurité financière, réparer ce qui est cassé, résoudre des problèmes, créer de la stabilité, protéger. Ces démonstrations concrètes d'amour deviennent invisibles si vous ne valorisez que les expressions verbales et émotionnelles. Cette myopie vous fait vivre dans une relation où vous vous sentez non-aimée alors que votre partenaire démontre constamment son amour d'une manière que vous refusez de reconnaître."
+            },
+            { 
+                text: "Un peu, mais j'aimerais qu'il soit plus expressif verbalement", 
+                points: 0,
+                explanation: "Reconnaître intellectuellement les différences d'expression tout en continuant à prioriser vos propres préférences crée une frustration perpétuelle et injuste. Cette posture dit essentiellement : 'Je vois que tu m'aimes à ta façon, mais ce n'est pas assez, tu dois m'aimer à ma façon.' Imaginez l'inverse : il reconnaît vos expressions émotionnelles mais continue à insister que ce qui compte vraiment c'est l'action silencieuse. Cette asymétrie d'acceptation crée un déficit d'amour perçu qui est en réalité un déficit de reconnaissance. Élargir vos critères de ce qui constitue l'amour transformera votre capacité à recevoir ce qui est déjà offert."
+            },
+            { 
+                text: "Oui, je reconnais et valorise ses expressions d'amour uniques, même si différentes des miennes", 
+                points: 1,
+                explanation: "La capacité à voir et valoriser les expressions d'amour qui diffèrent de vos préférences naturelles est une compétence relationnelle sophistiquée et rare. Vous comprenez que l'amour n'a pas un seul dialecte et que traduire les démonstrations masculines dans un langage que vous pouvez recevoir enrichit infiniment votre expérience relationnelle. Cette ouverture transforme des actions quotidiennes que d'autres ignorent en preuves constantes d'amour et d'engagement. Vous créez un environnement où votre partenaire se sent vu et apprécié dans son authenticité, pas constamment jugé selon un standard étranger à sa nature."
+            }
+        ]
+    },
+
+    // NOUVELLES QUESTIONS Q31-Q35
+    {
+        id: 31,
+        category: "Appréciation & Gratitude Quotidienne",
+        question: "À quelle fréquence exprimez-vous de la gratitude pour les petites attentions quotidiennes de votre partenaire (préparer le café, sortir les poubelles, vous demander comment s'est passée votre journée) ?",
+        options: [
+            { 
+                text: "Rarement, ce sont des gestes mineurs qui font partie de la vie commune", 
+                points: 0,
+                explanation: "Considérer les petites attentions comme 'mineures' ou 'normales' érode lentement mais sûrement l'investissement émotionnel de votre partenaire. Ces micro-gestes quotidiens sont en réalité des démonstrations constantes d'attention et d'amour qui construisent l'intimité. L'absence de reconnaissance transforme ces élans généreux en corvées invisibles, tuant progressivement la motivation intrinsèque à prendre soin de vous. Les recherches montrent que l'accumulation de moments positifs mineurs prédit mieux la satisfaction relationnelle que les grands gestes occasionnels. Chaque petite attention ignorée est une opportunité de connexion perdue et une déception silencieuse accumulée chez votre partenaire."
+            },
+            { 
+                text: "Occasionnellement, quand je pense à le faire", 
+                points: 0,
+                explanation: "Une reconnaissance sporadique et dépendante de votre humeur du moment communique que l'appréciation n'est pas une priorité constante mais un bonus aléatoire. Cette inconsistance crée de l'incertitude émotionnelle : votre partenaire ne sait jamais si ses efforts seront vus ou ignorés. La gratitude occasionnelle peut paradoxalement frustrer davantage qu'aucune reconnaissance, car elle prouve que vous pouvez voir les efforts quand vous y pensez, mais choisissez souvent de ne pas le faire. Transformer l'appréciation en habitude intentionnelle plutôt qu'en pensée occasionnelle change radicalement le climat émotionnel de votre relation."
+            },
+            { 
+                text: "Régulièrement, je remarque et remercie consciemment ces petits gestes chaque jour", 
+                points: 1,
+                explanation: "La gratitude quotidienne intentionnelle pour les petites attentions est l'une des pratiques relationnelles les plus puissantes et pourtant sous-estimées. Cette reconnaissance constante crée un cycle vertueux : votre partenaire se sent vu et valorisé, ce qui renforce son désir de continuer et même d'amplifier ses attentions. Les micro-appréciations accumulées construisent un compte bancaire émotionnel positif qui protège votre relation durant les inévitables périodes difficiles. Vous transformez des routines ordinaires en rituels d'amour conscients, créant une atmosphère quotidienne de gratitude mutuelle qui nourrit profondément l'engagement et la joie relationnelle."
+            }
+        ]
+    },
+    {
+        id: 32,
+        category: "Communication Proactive",
+        question: "Lorsque vous sentez un décalage ou une tension émergente dans la relation, attendez-vous que votre partenaire initie la conversation ou prenez-vous l'initiative d'ouvrir le dialogue ?",
+        options: [
+            { 
+                text: "J'attends généralement qu'il aborde le sujet en premier", 
+                points: 0,
+                explanation: "Attendre passivement que votre partenaire détecte et initie les conversations sur les tensions relationnelles place une charge émotionnelle disproportionnée sur lui. Cette posture implique qu'il est responsable de la maintenance émotionnelle de la relation pendant que vous restez en retrait. Les hommes ne sont pas naturellement aussi attentifs aux subtilités émotionnelles ; attendre qu'il devine et agisse garantit souvent que les problèmes s'enveniment. Cette passivité peut aussi créer du ressentiment chez vous ('pourquoi ne voit-il pas ?') alors que vous n'avez jamais clairement communiqué. La co-responsabilité relationnelle nécessite d'initier activement les dialogues difficiles."
+            },
+            { 
+                text: "J'hésite souvent, craignant de créer un conflit inutile", 
+                points: 0,
+                explanation: "L'évitement par peur du conflit garantit paradoxalement des conflits plus grands plus tard. Les petites tensions non adressées s'accumulent et se transforment en ressentiments profonds qui explosent de manière disproportionnée. Votre hésitation communique aussi un manque de confiance dans la solidité de votre relation : si vous ne pouvez pas aborder de petits inconforts, comment naviguerez-vous les vrais défis ? Les couples résilients ne sont pas ceux sans tensions, mais ceux capables de dialoguer tôt et constructivement. Apprendre à distinguer les conflits destructeurs des conversations difficiles mais nécessaires est une compétence relationnelle essentielle."
+            },
+            { 
+                text: "Je prends régulièrement l'initiative d'ouvrir des conversations honnêtes et constructives", 
+                points: 1,
+                explanation: "L'initiative proactive dans l'ouverture de dialogues difficiles démontre un courage relationnel et une co-responsabilité mature. Vous ne laissez pas les malaises s'installer et se cristalliser en ressentiments. Cette approche préventive maintient les canaux de communication ouverts et fluides, permettant des ajustements constants plutôt que des crises occasionnelles. Votre partenaire apprend qu'il peut compter sur vous pour co-naviguer les défis relationnels, pas seulement les subir passivement. Cette équité dans l'initiation des conversations renforce le partenariat authentique et allège la charge émotionnelle qui repose souvent disproportionnellement sur un seul partenaire."
+            }
+        ]
+    },
+    {
+        id: 33,
+        category: "Célébration des Réussites",
+        question: "Lorsque votre partenaire partage une réussite professionnelle ou personnelle, quelle est votre réaction première ?",
+        options: [
+            { 
+                text: "Je l'écoute poliment mais ramène souvent la conversation à mes propres préoccupations", 
+                points: 0,
+                explanation: "Minimiser les réussites de votre partenaire en détournant rapidement l'attention vers vos propres préoccupations communique clairement une hiérarchie : vos expériences comptent plus que les siennes. Cette dynamique crée un déséquilibre émotionnel où il apprend que ses joies ne seront pas pleinement accueillies ou célébrées. Avec le temps, il cessera probablement de partager ses victoires avec vous, créant une distance émotionnelle. La capacité à célébrer authentiquement les succès de l'autre, même quand vous traversez vos propres difficultés, est un marqueur de générosité émotionnelle et de maturité relationnelle rare mais puissante."
+            },
+            { 
+                text: "Je félicite, mais parfois avec une pointe de comparaison ou de compétition", 
+                points: 0,
+                explanation: "Injecter de la comparaison ou de la compétition dans les moments de célébration transforme ce qui devrait être une joie partagée en une dynamique toxique. Cette posture révèle une insécurité sous-jacente où sa réussite est perçue comme diminuant votre valeur plutôt que comme une victoire commune. Les couples épanouissants fonctionnent en équipe où le succès de l'un enrichit les deux. Votre compétitivité subtile empoisonne ses victoires et crée une atmosphère où il doit minimiser ses accomplissements pour protéger votre ego. Cette dynamique tue progressivement la capacité à être vulnérable et authentique dans le partage des expériences."
+            },
+            { 
+                text: "Je célèbre sincèrement avec lui, reconnaissant ses efforts et exprimant ma fierté", 
+                points: 1,
+                explanation: "La célébration authentique et généreuse des réussites de votre partenaire crée un climat émotionnel extrêmement nourrissant. Votre capacité à vous réjouir sincèrement de ses victoires, sans compétition ni minimisation, démontre une sécurité intérieure et une générosité d'esprit rare. Cette reconnaissance devient un carburant émotionnel puissant qui renforce sa confiance et son engagement. Vous créez un espace sûr où il peut être pleinement lui-même, partager ses joies sans retenue, et se sentir profondément soutenu. Cette dynamique positive se répercute dans tous les aspects de votre relation, créant un cycle vertueux d'encouragement mutuel."
+            }
+        ]
+    },
+    {
+        id: 34,
+        category: "Gestion des Besoins Personnels",
+        question: "Comment communiquez-vous vos besoins émotionnels ou pratiques à votre partenaire ?",
+        options: [
+            { 
+                text: "J'utilise souvent des indices subtils ou indirects, espérant qu'il comprendra", 
+                points: 0,
+                explanation: "La communication indirecte et les attentes implicites sont des saboteurs relationnels majeurs. Espérer que votre partenaire devine vos besoins crée une dynamique frustrante pour vous deux : vous vous sentez incomprise, il se sent constamment en échec face à des attentes invisibles. Les hommes en particulier répondent bien mieux à la communication directe et claire qu'aux indices subtils. Cette approche indirecte est souvent un test caché ('s'il m'aimait vraiment, il saurait') qui est fondamentalement injuste et voué à l'échec. La clarté et la franchise dans l'expression des besoins sont des signes de maturité, pas de faiblesse."
+            },
+            { 
+                text: "Je les exprime quand je suis déjà frustrée qu'ils n'aient pas été satisfaits", 
+                points: 0,
+                explanation: "Attendre d'être frustrée pour communiquer vos besoins garantit que la conversation sera chargée émotionnellement et défensive plutôt que constructive. Votre partenaire reçoit l'information dans un contexte d'accusation implicite ('tu aurais dû savoir') plutôt que d'invitation à collaborer. Cette approche réactive transforme chaque expression de besoin en conflit potentiel, créant une association négative qui décourage la réceptivité. Communiquer les besoins calmement et proactivement, avant la frustration, permet une résolution collaborative et renforce la connexion plutôt que de créer de la défensivité."
+            },
+            { 
+                text: "Je communique clairement et directement mes besoins, sans attente qu'il devine", 
+                points: 1,
+                explanation: "La communication directe, claire et non-accusatrice de vos besoins est une compétence relationnelle fondamentale. Vous prenez la responsabilité de rendre vos besoins explicites plutôt que de les garder mystérieux et ensuite blâmer votre partenaire de ne pas les deviner. Cette approche mature transforme la satisfaction des besoins en collaboration plutôt qu'en test relationnel. Votre partenaire sait exactement comment vous soutenir et se sent compétent dans sa capacité à répondre à vos attentes clairement exprimées. Cette clarté crée une dynamique positive où les besoins peuvent être négociés et satisfaits mutuellement sans jeux psychologiques épuisants."
+            }
+        ]
+    },
+    {
+        id: 35,
+        category: "Vision Commune & Projets",
+        question: "Investissez-vous activement dans la construction de projets communs (objectifs partagés, rêves, plans d'avenir) avec votre partenaire ?",
+        options: [
+            { 
+                text: "Non, je reste principalement focalisée sur mes propres objectifs personnels", 
+                points: 0,
+                explanation: "Une focalisation exclusive sur vos objectifs personnels sans construction de vision commune transforme votre relation en cohabitation parallèle plutôt qu'en partenariat authentique. Les projets partagés créent une direction commune qui soude les couples et donne un sens profond à l'engagement. Sans cette dimension collaborative, la relation devient accessoire à vos vies individuelles plutôt que le fondement sur lequel tout le reste se construit. Votre partenaire peut se sentir comme un spectateur de votre vie plutôt qu'un co-créateur, générant un sentiment d'isolement même dans la proximité. L'équilibre entre autonomie personnelle et construction commune est essentiel pour une relation épanouissante."
+            },
+            { 
+                text: "Parfois, mais nos visions individuelles priment souvent", 
+                points: 0,
+                explanation: "Maintenir constamment la primauté des visions individuelles sur la vision partagée crée une compétition implicite plutôt qu'une collaboration. Cette hiérarchie communique que la relation doit s'adapter à vos plans plutôt que d'être co-créée mutuellement. Les couples durables trouvent l'équilibre entre autonomie et interdépendance, où les projets communs deviennent aussi importants que les aspirations individuelles. Le manque d'investissement dans une vision partagée laisse la relation sans direction claire, vulnérable aux dérives et au désengagement progressif lorsque les trajectoires individuelles divergent naturellement avec le temps."
+            },
+            { 
+                text: "Oui, nous co-créons régulièrement une vision partagée tout en respectant nos individualités", 
+                points: 1,
+                explanation: "La co-création active d'une vision et de projets communs tout en maintenant des espaces d'individualité représente la maturité relationnelle optimale. Vous comprenez que l'interdépendance choisie crée une relation plus riche que l'indépendance totale. Ces projets partagés deviennent des fils qui tissent vos vies ensemble, créant une tapisserie commune qui transcende les expériences individuelles. Cette approche donne un sens profond et une direction à votre engagement mutuel. Vous investissez intentionnellement dans un futur partagé, renforçant quotidiennement le sentiment d'équipe et de partenariat qui caractérise les relations exceptionnelles et durables."
+            }
+        ]
+    }
+];
+
+// Variables globales
+let currentQuestion = 0;
+let answers = [];
+let categoryScores = {
+    "Communication & Expression": 0,
+    "Gestion des Conflits": 0,
+    "Rôles & Contribution": 0,
+    "Identité & Conditionnement": 0,
+    "Passé & Responsabilité": 0,
+    "Compréhension de l'Expérience Masculine": 0,
+    "Appréciation & Gratitude Quotidienne": 0,
+    "Communication Proactive": 0,
+    "Célébration des Réussites": 0,
+    "Gestion des Besoins Personnels": 0,
+    "Vision Commune & Projets": 0
+};
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    showQuestion();
+    updateProgress();
+});
+
+// Afficher la question actuelle
+function showQuestion() {
+    const question = questions[currentQuestion];
+    const container = document.getElementById('question-container');
+    
+    let html = `
+        <div class="question-header">
+            <span class="category-badge">${question.category}</span>
+            <h2 class="question-text">Question ${currentQuestion + 1}/35</h2>
+        </div>
+        <p class="question-content">${question.question}</p>
+        <div class="options">
+    `;
+    
+    question.options.forEach((option, index) => {
+        html += `
+            <label class="option-label">
+                <input type="radio" name="q${currentQuestion}" value="${index}" 
+                       ${answers[currentQuestion] === index ? 'checked' : ''}>
+                <span class="option-text">${option.text}</span>
+            </label>
+        `;
+    });
+    
+    html += '</div>';
+    container.innerHTML = html;
+    
+    // Ajouter les écouteurs pour les radios
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', handleAnswer);
+    });
+}
+
+// Gérer la sélection de réponse
+function handleAnswer(e) {
+    const selectedValue = parseInt(e.target.value);
+    answers[currentQuestion] = selectedValue;
+    
+    // Activer le bouton suivant
+    document.getElementById('next-btn').disabled = false;
+}
+
+// Bouton Précédent
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion();
+        updateProgress();
+        updateNavigationButtons();
+    }
+}
+
+// Bouton Suivant
+function nextQuestion() {
+    if (answers[currentQuestion] === undefined) {
+        alert('Veuillez sélectionner une réponse avant de continuer.');
+        return;
+    }
+    
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        showQuestion();
+        updateProgress();
+        updateNavigationButtons();
+        document.getElementById('next-btn').disabled = true;
+    } else {
+        showResults();
+    }
+}
+
+// Mettre à jour les boutons de navigation
+function updateNavigationButtons() {
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    
+    prevBtn.disabled = currentQuestion === 0;
+    nextBtn.textContent = currentQuestion === questions.length - 1 ? 'Voir mes résultats' : 'Suivant';
+    
+    if (answers[currentQuestion] !== undefined) {
+        nextBtn.disabled = false;
+    }
+}
+
+// Mettre à jour la barre de progression
+function updateProgress() {
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const percentage = ((currentQuestion + 1) / questions.length) * 100;
+    
+    progressBar.style.width = percentage + '%';
+    progressText.textContent = `${currentQuestion + 1} / ${questions.length}`;
+}
+
+// Calculer les scores
+function calculateScores() {
+    // Réinitialiser les scores
+    Object.keys(categoryScores).forEach(key => categoryScores[key] = 0);
+    
+    let totalScore = 0;
+    
+    answers.forEach((answerIndex, questionIndex) => {
+        const question = questions[questionIndex];
+        const points = question.options[answerIndex].points;
+        
+        categoryScores[question.category] += points;
+        totalScore += points;
+    });
+    
+    return totalScore;
+}
+
+// Afficher les résultats
+function showResults() {
+    const totalScore = calculateScores();
+    const percentage = (totalScore / questions.length) * 100;
+    
+    document.getElementById('quiz-content').style.display = 'none';
+    document.getElementById('results-content').style.display = 'block';
+    
+    // Score global
+    document.getElementById('total-score').textContent = `${totalScore} / ${questions.length}`;
+    document.getElementById('percentage-score').textContent = `${Math.round(percentage)}%`;
+    
+    // Interprétation générale
+    let interpretation = '';
+    let recommendations = '';
+    
+    if (percentage >= 80) {
+        interpretation = "Excellent travail ! Vous démontrez une conscience relationnelle exceptionnelle et une maturité émotionnelle rare. Vous comprenez les dynamiques de couple de manière nuancée et semblez investir activement dans la santé de votre relation.";
+        recommendations = "Continuez à cultiver ces qualités précieuses. Partagez vos insights avec votre partenaire et explorez ensemble comment vous pourriez encore approfondir votre connexion. Considérez de devenir une ressource pour d'autres couples dans votre entourage.";
+    } else if (percentage >= 60) {
+        interpretation = "Bon travail ! Vous avez développé une conscience relationnelle solide dans plusieurs domaines. Il reste quelques zones où une réflexion plus approfondie pourrait enrichir votre relation et votre propre épanouissement.";
+        recommendations = "Concentrez-vous sur les catégories où vos scores sont plus faibles. Engagez des conversations ouvertes avec votre partenaire sur ces thèmes. Envisagez de lire des ressources sur les dynamiques de couple (Gottman, Esther Perel) pour approfondir votre compréhension.";
+    } else if (percentage >= 40) {
+        interpretation = "Vous êtes sur un chemin de croissance. Ce questionnaire révèle plusieurs opportunités d'amélioration qui, si elles sont saisies, transformeront significativement la qualité de votre relation et votre propre bien-être.";
+        recommendations = "Soyez courageuse et honnête avec vous-même concernant les patterns révélés. Considérez un accompagnement (thérapie individuelle ou de couple) pour travailler sur les zones de vulnérabilité. Commencez par de petits changements concrets dans les catégories les plus faibles.";
+    } else {
+        interpretation = "Ce questionnaire révèle des zones importantes nécessitant attention et transformation. Reconnaître ces défis est le premier pas courageux vers une relation plus saine et épanouissante.";
+        recommendations = "Un accompagnement professionnel (thérapie individuelle et/ou de couple) est fortement recommandé pour travailler sur les patterns relationnels et personnels révélés. Engagez-vous dans un travail de développement personnel authentique. Commencez par une catégorie à la fois et célébrez chaque petit progrès.";
+    }
+    
+    document.getElementById('interpretation-text').textContent = interpretation;
+    document.getElementById('recommendations-text').textContent = recommendations;
+    
+    // Scores par catégorie
+    const categoryContainer = document.getElementById('category-scores');
+    let categoryHTML = '<h3>Scores Détaillés par Catégorie</h3>';
+    
+    // Calculer le maximum possible par catégorie
+    const categoryMaxScores = {};
+    questions.forEach(q => {
+        if (!categoryMaxScores[q.category]) {
+            categoryMaxScores[q.category] = 0;
+        }
+        categoryMaxScores[q.category]++;
+    });
+    
+    Object.keys(categoryScores).forEach(category => {
+        const score = categoryScores[category];
+        const maxScore = categoryMaxScores[category] || 1;
+        const categoryPercentage = (score / maxScore) * 100;
+        
+        categoryHTML += `
+            <div class="category-score">
+                <div class="category-name">${category}</div>
+                <div class="category-bar-container">
+                    <div class="category-bar" style="width: ${categoryPercentage}%"></div>
+                </div>
+                <div class="category-value">${score} / ${maxScore}</div>
+            </div>
+        `;
+    });
+    
+    categoryContainer.innerHTML = categoryHTML;
+    
+    // Réponses détaillées
+    showDetailedAnswers();
+}
+
+// Afficher les réponses détaillées
+function showDetailedAnswers() {
+    const container = document.getElementById('detailed-answers');
+    let html = '<h3>Vos Réponses et Explications Personnalisées</h3>';
+    
+    answers.forEach((answerIndex, questionIndex) => {
+        const question = questions[questionIndex];
+        const selectedOption = question.options[answerIndex];
+        
+        html += `
+            <div class="answer-detail">
+                <div class="answer-question">
+                    <strong>Q${questionIndex + 1}:</strong> ${question.question}
+                </div>
+                <div class="answer-selected">
+                    <strong>Votre réponse:</strong> ${selectedOption.text}
+                    <span class="answer-points">(${selectedOption.points} point${selectedOption.points > 1 ? 's' : ''})</span>
+                </div>
+                ${selectedOption.explanation ? `
+                    <div class="answer-explanation">
+                        <strong>Explication:</strong> ${selectedOption.explanation}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Recommencer le questionnaire
+function restartQuiz() {
+    currentQuestion = 0;
+    answers = [];
+    Object.keys(categoryScores).forEach(key => categoryScores[key] = 0);
+    
+    document.getElementById('quiz-content').style.display = 'block';
+    document.getElementById('results-content').style.display = 'none';
+    document.getElementById('next-btn').disabled = true;
+    
+    showQuestion();
+    updateProgress();
+    updateNavigationButtons();
+}
+
+</script>
+</body>
+</html>
