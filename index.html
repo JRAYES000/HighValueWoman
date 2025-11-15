@@ -26,6 +26,117 @@
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(139, 69, 139, 0.2);
             overflow: hidden;
+            position: relative;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 30px rgba(217, 70, 166, 0.6);
+            border-color: #d946a6;
+        }
+
+        .lang-btn:active {
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .lang-btn.active {
+            border-color: #d946a6;
+            border-width: 4px;
+            box-shadow: 0 8px 30px rgba(217, 70, 166, 0.8);
+        }
+
+        #google_translate_element {
+            display: none;
+        }
+
+        /* Hide Google Translate banner */
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0px !important;
+        }
+
+        /* Style Google Translate dropdown */
+        .goog-te-gadget {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        }
+
+        .goog-te-gadget-simple {
+            background: linear-gradient(135deg, #d946a6 0%, #b03584 100%) !important;
+            border: none !important;
+            border-radius: 30px !important;
+            padding: 12px 24px !important;
+            font-size: 1.1em !important;
+            font-weight: bold !important;
+            color: white !important;
+            box-shadow: 0 5px 20px rgba(217, 70, 166, 0.5) !important;
+            transition: all 0.3s ease !important;
+            cursor: pointer !important;
+        }
+
+        .goog-te-gadget-simple:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(217, 70, 166, 0.6) !important;
+        }
+
+        .goog-te-gadget-simple .goog-te-menu-value {
+            color: white !important;
+        }
+
+        .goog-te-gadget-simple .goog-te-menu-value span {
+            color: white !important;
+            font-weight: bold !important;
+        }
+
+        .goog-te-gadget-simple .goog-te-menu-value span:first-child {
+            display: inline-block;
+        }
+
+        .goog-te-gadget-simple .goog-te-menu-value span:last-child {
+            border-left: 2px solid rgba(255, 255, 255, 0.5);
+            padding-left: 10px;
+            margin-left: 10px;
+        }
+
+        .goog-te-gadget-icon {
+            display: none !important;
+        }
+
+        .goog-te-combo {
+            margin: 0 !important;
+            padding: 8px 12px !important;
+            border-radius: 20px !important;
+            border: 2px solid #d946a6 !important;
+            font-weight: bold !important;
+            color: #d946a6 !important;
+            background: white !important;
+            cursor: pointer !important;
         }
 
         .header {
@@ -234,11 +345,35 @@
             .option label {
                 font-size: 0.95em;
             }
+
+            .language-selector {
+                top: 10px;
+                right: 10px;
+                gap: 8px;
+            }
+
+            .lang-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="google_translate_element"></div>
     <div class="container">
+        <div class="language-selector">
+            <button class="lang-btn active" onclick="changeLanguage('fr')" title="Français">
+                🇫🇷
+            </button>
+            <button class="lang-btn" onclick="changeLanguage('en')" title="English">
+                🇬🇧
+            </button>
+            <button class="lang-btn" onclick="changeLanguage('es')" title="Español">
+                🇪🇸
+            </button>
+        </div>
         <div class="header">
             <h1>✨ Évaluez votre compréhension des comportements masculins ✨</h1>
             <p>Et les principes d'une relation équilibrée, saine et épanouie pour garder son homme amoureux</p>
@@ -1201,5 +1336,69 @@
             feedbackContent.innerHTML = feedback;
         }
     </script>
+    
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'fr',
+                includedLanguages: 'en,fr,es,de,it,pt,nl,ru,ja,zh-CN,ar',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        function changeLanguage(lang) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Trigger Google Translate
+            var select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+            } else {
+                // If Google Translate not loaded yet, wait and try again
+                setTimeout(function() {
+                    var select = document.querySelector('.goog-te-combo');
+                    if (select) {
+                        select.value = lang;
+                        select.dispatchEvent(new Event('change'));
+                    }
+                }, 1000);
+            }
+        }
+
+        // Set active language on page load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var currentLang = 'fr';
+                var frame = document.querySelector('.goog-te-menu-frame');
+                if (frame) {
+                    var doc = frame.contentDocument || frame.contentWindow.document;
+                    var langSpan = doc.querySelector('.goog-te-menu2-item-selected .text');
+                    if (langSpan) {
+                        currentLang = langSpan.textContent.toLowerCase().includes('english') ? 'en' : 
+                                     langSpan.textContent.toLowerCase().includes('español') ? 'es' : 'fr';
+                    }
+                }
+                
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                var activeBtn = document.querySelector(`.lang-btn[onclick*="'${currentLang}'"]`);
+                if (activeBtn) {
+                    activeBtn.classList.add('active');
+                }
+            }, 1500);
+        });
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
